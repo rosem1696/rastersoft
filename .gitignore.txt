@@ -1,4 +1,4 @@
-/bin
-/build
-/SDL2
-/winBuildScripts
+bin/
+build/
+SDL2/
+winBuildScripts/
