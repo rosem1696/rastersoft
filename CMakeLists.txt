@@ -8,15 +8,20 @@ set(PROJECT_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin)
 set(PROJECT_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/inc)
 
 #set sdl variables
-#set(SDL_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/SDL2/include)
 find_path(SDL_INCLUDE_DIR NAMES SDL.h PATHS ${CMAKE_SOURCE_DIR}/SDL2/include)
 find_library(SDL_LIBRARY NAMES SDL2 PATHS ${CMAKE_SOURCE_DIR}/SDL2/lib/x64)
 find_library(SDLMAIN_LIBRARY NAMES SDL2main PATHS ${CMAKE_SOURCE_DIR}/SDL2/lib/x64)
-#get all source files recursively
-file(GLOB_RECURSE SRC_FILES ${PROJECT_SOURCE_DIR}/*.c)
 
-#create executable
-add_executable(${PROJECT_NAME} ${SRC_FILES})
+#get all source and header files recursively
+file(GLOB_RECURSE SRC_FILES ${PROJECT_SOURCE_DIR}/*.c)
+file(GLOB_RECURSE HEADER_FILES ${PROJECT_INCLUDE_DIR}/*.h)
+
+#create source groups
+source_group("C Files" FILES ${SRC_FILES})
+source_group("HEADER Files" FILES ${HEADER_FILES})
+
+#create executable target
+add_executable(${PROJECT_NAME} ${SRC_FILES} ${HEADER_FILES})
 
 #change target settings
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_INCLUDE_DIR} ${SDL_INCLUDE_DIR})
