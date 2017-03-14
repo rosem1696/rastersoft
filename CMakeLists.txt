@@ -1,32 +1,18 @@
 cmake_minimum_required(VERSION 3.6)
 
-project(rastersoft C)
+project(rastersoft)
 
-#set project directory variables
-set(PROJECT_SOURCE_DIR ${CMAKE_SOURCE_DIR}/src)
+#set location for compiled binaries
 set(PROJECT_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin)
-set(PROJECT_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/inc)
 
-#set sdl variables
-find_path(SDL_INCLUDE_DIR NAMES SDL.h PATHS ${CMAKE_SOURCE_DIR}/SDL2/include)
-find_library(SDL_LIBRARY NAMES SDL2 PATHS ${CMAKE_SOURCE_DIR}/SDL2/lib/x64)
-find_library(SDLMAIN_LIBRARY NAMES SDL2main PATHS ${CMAKE_SOURCE_DIR}/SDL2/lib/x64)
+#set SDL2 variables
+find_path(SDL_INCLUDE_DIR NAMES SDL.h PATHS C:/SDL2-2.0.4/include)
+find_library(SDL_LIBRARY NAMES SDL2 PATHS C:/SDL2-2.0.4/lib/x64)
+find_library(SDLMAIN_LIBRARY NAMES SDL2main PATHS C:/SDL2-2.0.4/lib/x64)
 
-#get all source and header files recursively
-file(GLOB_RECURSE SRC_FILES ${PROJECT_SOURCE_DIR}/*.c)
-file(GLOB_RECURSE HEADER_FILES ${PROJECT_INCLUDE_DIR}/*.h)
-
-#create source groups
-source_group("C Files" FILES ${SRC_FILES})
-source_group("HEADER Files" FILES ${HEADER_FILES})
-
-#create executable target
-add_executable(${PROJECT_NAME} ${SRC_FILES} ${HEADER_FILES})
-
-#change target settings
-target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_INCLUDE_DIR} ${SDL_INCLUDE_DIR})
-target_link_libraries(${PROJECT_NAME} ${SDL_LIBRARY} ${SDLMAIN_LIBRARY})
-set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+add_subdirectory(rastersoft)
+add_subdirectory(demo)
+add_subdirectory(tests)
 
 #set Visual Studio Solution startup project
-set_property(DIRECTORY ${CMAKE_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
+#set_property(DIRECTORY ${CMAKE_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
