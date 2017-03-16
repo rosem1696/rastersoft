@@ -3,9 +3,7 @@
 #include <stdbool.h>
 #include <string.h>
 
-#include <SDL.h>
-
-#include "rasterizer.h"
+#include "rast_matrix.h"
 
 void multTransforms(struct transform* dest, struct transform* mat1, struct transform* mat2) {
 	struct transform tmp;

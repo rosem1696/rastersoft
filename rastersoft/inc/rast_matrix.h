@@ -1,11 +1,8 @@
-#ifndef drawInterface_h
-#define drawInterface_h
+#ifndef rast_matrix_h
+#define rast_matrix_h
 
 #include <stdint.h>
 #include <stdbool.h>
-
-#include <SDL.h>
-
 
 struct transform {
 	float matrix[16]

@@ -13,5 +13,5 @@ source_group("HEADER Files" FILES ${HEADER_FILES})
 add_library(${PROJECT_NAME} SHARED ${SRC_FILES} ${HEADER_FILES})
 
 #change target settings
-target_include_directories(${PROJECT_NAME} PUBLIC ${SDL_INCLUDE_DIR})
+target_include_directories(${PROJECT_NAME} PUBLIC ${RASTERSOFT_INCLUDE_DIR})
 set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})

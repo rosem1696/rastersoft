@@ -1,5 +1,5 @@
-#ifndef arraylist_h_ 
-#define arraylist_h_
+#ifndef rast_vector_h
+#define rast_vector_h
 
 struct arrayList {
 	void **data;
@@ -9,7 +9,7 @@ struct arrayList {
 };
 
 void arrayList_init(struct arrayList* list, int dataSize);
-void arrayList_init(struct arrayList* list, int dataSize, int initialLength);
+void arrayList_init_length(struct arrayList* list, int dataSize, int initialLength);
 void arrayList_add(struct arrayList* list, void* data);
 int arrayList_set(struct arrayList* list, void* data, int index);
 void* arrayList_get(struct arrayList* list, int index);

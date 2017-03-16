@@ -1,8 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "rasterizer.h"
-#include "arraylist.h"
+#include "rast_vector.h"
 
 void arrayList_init(struct arrayList* list, int dataSize) {
 	list->data = malloc(10);
@@ -11,7 +10,7 @@ void arrayList_init(struct arrayList* list, int dataSize) {
 	list->dataSize = dataSize;
 }
 
-void arrayList_init(struct arrayList* list, int dataSize, int initialLength) {
+void arrayList_init_length(struct arrayList* list, int dataSize, int initialLength) {
 	list->data = malloc(initialLength);
 	list->size = initialLength;
 	list->length = 0;

@@ -13,6 +13,6 @@ source_group("HEADER Files" FILES ${HEADER_FILES})
 add_executable(demo ${SRC_FILES} ${HEADER_FILES})
 
 #change target settings
-target_include_directories(demo PUBLIC ${PROJECT_INCLUDE_DIR} ${SDL_INCLUDE_DIR})
+target_include_directories(demo PUBLIC ${SDL_INCLUDE_DIR} ${DEMO_INCLUDE_DIR})
 target_link_libraries(demo ${SDL_LIBRARY} ${SDLMAIN_LIBRARY} ${PROJECT_NAME})
 set_target_properties(demo PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
