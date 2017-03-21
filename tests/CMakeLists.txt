@@ -12,7 +12,10 @@ source_group("HEADER Files" FILES ${HEADER_FILES})
 #create executable target
 add_executable(tests ${SRC_FILES} ${HEADER_FILES})
 
+#get rastersoft library include directories 
+get_target_property(RASTERSOFT_INCLUDE_DIR ${PROJECT_NAME} INCLUDE_DIRECTORIES)
+
 #change target settings
-target_include_directories(tests PUBLIC ${SDL_INCLUDE_DIR} ${TESTS_INCLUDE_DIR})
+target_include_directories(tests PUBLIC ${SDL_INCLUDE_DIR} ${TESTS_INCLUDE_DIR} ${RASTERSOFT_INCLUDE_DIR})
 target_link_libraries(tests ${SDL_LIBRARY} ${SDLMAIN_LIBRARY} ${PROJECT_NAME})
 set_target_properties(tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
