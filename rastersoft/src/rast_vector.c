@@ -3,6 +3,8 @@
 
 #include "rast_vector.h"
 
+/* TODO: This needs a complete overhaul */
+
 void arrayList_init(struct arrayList* list, size_t dataSize) {
 	list->data = malloc(10);
 	list->size = 10;

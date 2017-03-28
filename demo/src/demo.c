@@ -229,6 +229,10 @@ int main(int argc, char *argv[]) {
 	float y = .5;
 	float c = .01;
 
+	struct transform* trans = malloc(sizeof(struct transform));
+	struct transform* tmp = malloc(sizeof(struct transform));
+	struct point* transPoints = malloc(12 * sizeof(struct point));
+
 	SDL_Event ev;
 	while (true) {
 		SDL_PollEvent(&ev);
@@ -244,19 +248,15 @@ int main(int argc, char *argv[]) {
 		getTranslateMat(model, x, y, z);
 		getTranslateMat(view, 0, 0, 0);
 
-		struct transform* stack = malloc(sizeof(struct transform));
-
-		multTransforms(stack, projection, model);
-		multTransforms(stack, stack, view);
-
-		struct point* transPoints = malloc(12 * sizeof(struct point));
+		multTransforms(tmp, projection, model);
+		multTransforms(trans, tmp, view);
 
 		/*printPoints(cube->points, 8);*/
 		/*SDL_Delay(1000000);*/
 
 		int i;
 		for (i = 0; i < 8; i++) {
-			transformPoint(transPoints + i, stack, cube->points + i);
+			transformPoint(transPoints + i, trans, cube->points + i);
 		}
 
 		for (i = 0; i < 12; i++) {

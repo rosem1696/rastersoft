@@ -5,7 +5,7 @@
 #include <stdbool.h>
 
 struct transform {
-	float matrix[16];
+	float matrix[4][4];
 };
 
 struct point {
