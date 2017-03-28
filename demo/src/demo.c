@@ -3,8 +3,14 @@
 #include <math.h>
 #include <stdbool.h>
 
+#ifdef _WIN32
 #include <SDL.h>
-#include <rasterizer.h>
+#else
+#include <SDL2/SDL.h>
+#endif
+
+#include <rastersoft.h>
+#include <rast_matrix.h>
 
 const int SCREEN_WIDTH = 1280;
 const int SCREEN_HEIGHT = 720;
@@ -266,10 +272,12 @@ int main(int argc, char *argv[]) {
 		if (z < -5 || z > 5) {
 			c = -c;
 		}
-		Sleep(10);
+		/*Sleep(10);*/
+		SDL_Delay(10);
 	}
 
-	Sleep(100000);
+	/*Sleep(100000);*/
+	SDL_Delay(100000);
 
 	freeCube(cube);
 	draw_kill_window(window);
