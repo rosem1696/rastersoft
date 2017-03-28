@@ -5,7 +5,7 @@ struct arrayList {
 	void **data;
 	int size; //Current size of array
 	int length; //Number of elements in list
-	int dataSize
+	int dataSize;
 };
 
 void arrayList_init(struct arrayList* list, int dataSize);

@@ -19,7 +19,7 @@ void arrayList_init_length(struct arrayList* list, int dataSize, int initialLeng
 
 void arrayList_add(struct arrayList* list, void* data) {
 	if(list->length == list->size) {
-		realloc(list->data, 2 * list->size);
+		list->data = realloc(list->data, 2 * list->size);
 		list->size = 2 * list->size;
 	}
 	list->data[list->length] = malloc(list->dataSize);

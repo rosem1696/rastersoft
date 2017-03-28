@@ -11,10 +11,10 @@ void multTransforms(struct transform* dest, struct transform* mat1, struct trans
 	int col;
 	for (row = 0; row < 4; row++) {
 		for (col = 0; col < 4; col++) {
-			tmp.matrix[(4 * row) + col] = mat1->matrix[4 * row] * mat2->matrix[col] +
-											mat1->matrix[(4 * row) + 1] * mat2->matrix[col + 4] +
-											mat1->matrix[(4 * row) + 2] * mat2->matrix[col + 8] +
-											mat1->matrix[(4 * row) + 3] * mat2->matrix[col + 12];
+			tmp.matrix[(4 * row) + col] =	mat1->matrix[ 4 * row     ] * mat2->matrix[col     ] +
+							mat1->matrix[(4 * row) + 1] * mat2->matrix[col + 4 ] +
+							mat1->matrix[(4 * row) + 2] * mat2->matrix[col + 8 ] +
+							mat1->matrix[(4 * row) + 3] * mat2->matrix[col + 12];
 		}
 	}
 	memcpy(dest, &tmp, sizeof(struct transform));
@@ -24,10 +24,10 @@ void transformPoint(struct point* dest, struct transform* trans, struct point* p
 	struct point tmp;
 	int row;
 	for (row = 0; row < 4; row++) {
-			tmp.matrix[row] =	trans->matrix[4 * row] * pnt->matrix[0] +
-								trans->matrix[(4 * row) + 1] * pnt->matrix[1] +
-								trans->matrix[(4 * row) + 2] * pnt->matrix[2] +
-								trans->matrix[(4 * row) + 3] * pnt->matrix[3];
+		tmp.matrix[row] =	trans->matrix[ 4 * row     ] * pnt->matrix[0] +
+					trans->matrix[(4 * row) + 1] * pnt->matrix[1] +
+					trans->matrix[(4 * row) + 2] * pnt->matrix[2] +
+					trans->matrix[(4 * row) + 3] * pnt->matrix[3];
 	}
 	memcpy(dest, &tmp, sizeof(struct point));
 }

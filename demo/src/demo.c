@@ -17,27 +17,10 @@ const int SCREEN_HEIGHT = 720;
 const float NEAR_PLANE = 1;
 const float FAR_PLANE = 50;
 
-const uint8_t* WINDOW_TITLE = "Tiny Renderer";
-
-
-SDL_Window* draw_new_window(uint8_t* windowTitle, const int screenWidth, const int screenHeight) {
-	SDL_Window* window = NULL;
-	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-		printf("SDL couldn't initialize! SDL_Error: %s\n", SDL_GetError());
-	}
-	else {
-		window = SDL_CreateWindow(windowTitle, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screenWidth, screenHeight, SDL_WINDOW_SHOWN);
-	}
-	return window;
-}
+#define WINDOW_TITLE "Tiny Renderer"
 
 SDL_Renderer* draw_new_renderer(SDL_Window* window) {
 	return SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-}
-
-void draw_kill_window(SDL_Window* window) {
-	SDL_DestroyWindow(window);
-	SDL_Quit();
 }
 
 void getNextColor(uint8_t* r, uint8_t* g, uint8_t* b) {
@@ -178,11 +161,9 @@ void freeCube(struct object* cube) {
 	free(cube);
 }
 
-bool clipDrawPolygon(SDL_Renderer* renderer, struct point* p1, struct point* p2, struct point* p3) {
+bool clipDrawPolygon(SDL_Renderer* renderer, struct point* p1, struct point* p2, struct point* p3);
 
-}
-
-bool clipDrawLine(SDL_Renderer* renderer, struct point* p1, struct point* p2) {
+void clipDrawLine(SDL_Renderer* renderer, struct point* p1, struct point* p2) {
 	float x1, y1, x2, y2;
 	if (p1->matrix[3] >= NEAR_PLANE || p2->matrix[3] >= NEAR_PLANE) {
 		if (p1->matrix[3] < NEAR_PLANE) {
@@ -209,15 +190,30 @@ bool clipDrawLine(SDL_Renderer* renderer, struct point* p1, struct point* p2) {
 			drawLineNDC(renderer, x1, y1, x2, y2);
 		}
 	}
-	else {
-
-	}
-
 }
 
 int main(int argc, char *argv[]) {
-	struct SDL_Window* window = draw_new_window(WINDOW_TITLE, SCREEN_WIDTH, SCREEN_HEIGHT);
-	struct SDL_Renderer* renderer = draw_new_renderer(window);
+	(void)argc;
+	(void)argv;
+	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+		fprintf(stderr, "SDL couldn't initialize! SDL_Error: %s\n", SDL_GetError());
+		return 1;
+	}
+	SDL_Window* window = SDL_CreateWindow(WINDOW_TITLE,
+			SDL_WINDOWPOS_CENTERED,
+			SDL_WINDOWPOS_CENTERED,
+			SCREEN_WIDTH,
+			SCREEN_HEIGHT,
+			SDL_WINDOW_SHOWN);
+	if (!window) {
+		fprintf(stderr, "SDL couldn't create a window! SDL_Error: %s\n", SDL_GetError());
+		return 1;
+	}
+	struct SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	if (!renderer) {
+		fprintf(stderr, "SDL couldn't create a renderer! SDL_Error: %s\n", SDL_GetError());
+		return 1;
+	}
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
 	SDL_RenderClear(renderer);
 	SDL_RenderPresent(renderer);
@@ -232,7 +228,14 @@ int main(int argc, char *argv[]) {
 	float x = .5;
 	float y = .5;
 	float c = .01;
+
+	SDL_Event ev;
 	while (true) {
+		SDL_PollEvent(&ev);
+		if (ev.type == SDL_QUIT) {
+			break;
+		}
+
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
 		SDL_RenderClear(renderer);
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
@@ -248,8 +251,8 @@ int main(int argc, char *argv[]) {
 
 		struct point* transPoints = malloc(12 * sizeof(struct point));
 
-		/*printPoints(cube->points, 8);
-		Sleep(1000000);*/
+		/*printPoints(cube->points, 8);*/
+		/*SDL_Delay(1000000);*/
 
 		int i;
 		for (i = 0; i < 8; i++) {
@@ -272,13 +275,15 @@ int main(int argc, char *argv[]) {
 		if (z < -5 || z > 5) {
 			c = -c;
 		}
-		/*Sleep(10);*/
 		SDL_Delay(10);
 	}
 
-	/*Sleep(100000);*/
-	SDL_Delay(100000);
+	/*SDL_Delay(100000);*/
 
 	freeCube(cube);
-	draw_kill_window(window);
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(window);
+	SDL_Quit();
+
+	return 0;
 }

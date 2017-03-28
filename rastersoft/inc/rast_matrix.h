@@ -5,17 +5,17 @@
 #include <stdbool.h>
 
 struct transform {
-	float matrix[16]
+	float matrix[16];
 };
 
 struct point {
-	float matrix[4]
+	float matrix[4];
 };
 
 struct face {
 	int p1;
 	int p2;
-	int p3
+	int p3;
 };
 
 struct object {
