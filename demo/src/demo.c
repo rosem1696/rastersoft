@@ -4,7 +4,7 @@
 #include <stdbool.h>
 
 #include <SDL.h>
-#include <rasterizer.h>
+#include <rast_matrix.h>
 
 const int SCREEN_WIDTH = 1280;
 const int SCREEN_HEIGHT = 720;
