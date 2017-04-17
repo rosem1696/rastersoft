@@ -3,18 +3,20 @@
 
 #include "rast_defines.h"
 
+
 DLL_EXPORT struct transform {
-	float matrix[16]
+	float matrix[4][4];
 };
 
 DLL_EXPORT struct point {
-	float matrix[4]
+	float matrix[4];
+
 };
 
 DLL_EXPORT struct face {
 	int p1;
 	int p2;
-	int p3
+	int p3;
 };
 
 DLL_EXPORT struct object {
