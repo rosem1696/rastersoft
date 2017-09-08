@@ -5,67 +5,70 @@
 
 #include "rast_matrix.h"
 
+/* These matrix*matrix matrix*vector routines are in-place. `dest` cannot overlap the other arguments. */
+
+/* TODO: matrix[j][k] where mat2 is in transposed form would be more efficient than matrix[k][j] */
 void multTransforms(struct transform* dest, struct transform* mat1, struct transform* mat2) {
-	struct transform tmp;
-	int row;
-	int col;
-	for (row = 0; row < 4; row++) {
-		for (col = 0; col < 4; col++) {
-			tmp.matrix[(4 * row) + col] = mat1->matrix[4 * row] * mat2->matrix[col] +
-											mat1->matrix[(4 * row) + 1] * mat2->matrix[col + 4] +
-											mat1->matrix[(4 * row) + 2] * mat2->matrix[col + 8] +
-											mat1->matrix[(4 * row) + 3] * mat2->matrix[col + 12];
+	int i, j, k;
+	for (i = 0; i < 4; i++) {
+		for (j = 0; j < 4; j++) {
+			dest->matrix[i][j] = 0;
+			for (k = 0; k < 4; k++) {
+				dest->matrix[i][j] += mat1->matrix[i][k] * mat2->matrix[k][j];
+			}
 		}
 	}
-	memcpy(dest, &tmp, sizeof(struct transform));
 }
 
 void transformPoint(struct point* dest, struct transform* trans, struct point* pnt) {
-	struct point tmp;
-	int row;
-	for (row = 0; row < 4; row++) {
-			tmp.matrix[row] =	trans->matrix[4 * row] * pnt->matrix[0] +
-								trans->matrix[(4 * row) + 1] * pnt->matrix[1] +
-								trans->matrix[(4 * row) + 2] * pnt->matrix[2] +
-								trans->matrix[(4 * row) + 3] * pnt->matrix[3];
+	int i, j;
+	for (i = 0; i < 4; i++) {
+		dest->matrix[i] = 0;
+		for (j = 0; j < 4; ++j) {
+			dest->matrix[i] += trans->matrix[i][j] * pnt->matrix[j];
+		}
 	}
-	memcpy(dest, &tmp, sizeof(struct point));
 }
 
+/*
+ *void getProjectionMat(struct transform* mat, float nearPlane, float farPlane) {
+ *        memset(mat->matrix, 0, sizeof(struct transform));
+ *        mat->matrix[0][0] = 1;
+ *        mat->matrix[1][1] = 1;
+ *        mat->matrix[2][2] = -((farPlane) / (farPlane - nearPlane));
+ *        mat->matrix[2][3] = -1;
+ *        mat->matrix[3][2] = -((farPlane*nearPlane) / (farPlane - nearPlane));
+ *}
+ */
+
+/* TODO: Clean this */
 void getProjectionMat(struct transform* mat, float nearPlane, float farPlane) {
-	int i;
-	for (i = 0; i < 16; i++) {
-		mat->matrix[i] = 0;
-	}
-	mat->matrix[0] = 1;
-	mat->matrix[5] = 1;
-	mat->matrix[10] = -((farPlane) / (farPlane - nearPlane));
-	mat->matrix[11] = -1;
-	mat->matrix[14] = -((farPlane*nearPlane) / (farPlane - nearPlane));
+	const float a = -((farPlane) / (farPlane - nearPlane));
+	const float b = -((farPlane*nearPlane) / (farPlane - nearPlane));
+	*mat = (struct transform){{
+		{ 1, 0, 0,  0 },
+		{ 0, 1, 0,  0 },
+		{ 0, 0, a, -1 },
+		{ 0, 0, b,  0 }
+	}};
 }
-
 
 void getTranslateMat(struct transform* mat, float objx, float objy, float objz) {
-	int i;
-	for (i = 0; i < 16; i++) {
-		mat->matrix[i] = 0;
-	}
-	mat->matrix[0] = 1;
-	mat->matrix[3] = objx;
-	mat->matrix[5] = 1;
-	mat->matrix[7] = objy;
-	mat->matrix[10] = 1;
-	mat->matrix[11] = objz;
-	mat->matrix[15] = 1;
+	*mat = (struct transform){{
+		{ 1, 0, 0, objx },
+		{ 0, 1, 0, objy },
+		{ 0, 0, 1, objz },
+		{ 0, 0, 0,    1 }
+	}};
 }
 
 void printMatrix(struct transform* mat) {
-	int i;
+	int i, j;
 	for (i = 0; i < 4; i++) {
-		printf("%f %f %f %f\n", mat->matrix[0 + 4 * i],
-			mat->matrix[1 + 4 * i],
-			mat->matrix[2 + 4 * i],
-			mat->matrix[3 + 4 * i]);
+		for (j = 0; j < 4; ++j) {
+			printf("%f ", mat->matrix[i][j]);
+		}
+		printf("\n");
 	}
 	printf("\n");
 }

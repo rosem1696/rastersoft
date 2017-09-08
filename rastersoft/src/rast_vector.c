@@ -3,14 +3,16 @@
 
 #include "rast_vector.h"
 
-void arrayList_init(struct arrayList* list, int dataSize) {
+/* TODO: This needs a complete overhaul */
+
+void arrayList_init(struct arrayList* list, size_t dataSize) {
 	list->data = malloc(10);
 	list->size = 10;
 	list->length = 0;
 	list->dataSize = dataSize;
 }
 
-void arrayList_init_length(struct arrayList* list, int dataSize, int initialLength) {
+void arrayList_init_length(struct arrayList* list, size_t dataSize, size_t initialLength) {
 	list->data = malloc(initialLength);
 	list->size = initialLength;
 	list->length = 0;
@@ -19,7 +21,7 @@ void arrayList_init_length(struct arrayList* list, int dataSize, int initialLeng
 
 void arrayList_add(struct arrayList* list, void* data) {
 	if(list->length == list->size) {
-		realloc(list->data, 2 * list->size);
+		list->data = realloc(list->data, 2 * list->size);
 		list->size = 2 * list->size;
 	}
 	list->data[list->length] = malloc(list->dataSize);
@@ -27,7 +29,7 @@ void arrayList_add(struct arrayList* list, void* data) {
 	list->length++;
 }
 
-int arrayList_set(struct arrayList* list, void* data, int index) {
+int arrayList_set(struct arrayList* list, void* data, size_t index) {
 	if (index >= list->length) {
 		memcpy(list->data[index], data, list->dataSize);
 		return 1;
@@ -36,7 +38,7 @@ int arrayList_set(struct arrayList* list, void* data, int index) {
 	}
 }
 
-void* arrayList_get(struct arrayList* list, int index) {
+void* arrayList_get(struct arrayList* list, size_t index) {
 	if (index >= list->length) {
 		return list->data[index];
 	} else {
@@ -45,7 +47,7 @@ void* arrayList_get(struct arrayList* list, int index) {
 }
 
 void arrayList_clear(struct arrayList* list) {
-	int i;
+	size_t i;
 	for (i = 0; i < list->length; i++) {
 		free(list->data[i]);
 		list->data[i] = NULL;
@@ -53,13 +55,13 @@ void arrayList_clear(struct arrayList* list) {
 	list->length = 0;
 }
 
-int arrayList_remove(struct arrayList* list, int index) {
+int arrayList_remove(struct arrayList* list, size_t index) {
 	if (index >= list->length) {
-		int i;
-		for (i = index + 1; i < list->length; i++) {
-			memcpy(list->data[i - 1], list->data[i], list->dataSize);
+		size_t i;
+		for (i = index+1; i < list->length; i++) {
+			memmove(list->data[i-1], list->data[i], list->dataSize);
 		}
-		free(list->data[list->length - 1]);
+		free(list->data[list->length-1]);
 		list->length--;
 		return 1;
 	} else {
