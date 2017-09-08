@@ -4,7 +4,7 @@
 #include "rast_defines.h"
 #include <stddef.h>
 
-DLL_EXPORT struct arrayList {
+struct arrayList {
 	void **data;
 	size_t size;	//< Current size of array
 	size_t length;	//< Number of elements in list

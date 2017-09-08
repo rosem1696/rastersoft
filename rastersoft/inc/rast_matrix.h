@@ -4,22 +4,22 @@
 #include "rast_defines.h"
 
 
-DLL_EXPORT struct transform {
+struct transform {
 	float matrix[4][4];
 };
 
-DLL_EXPORT struct point {
+struct point {
 	float matrix[4];
 
 };
 
-DLL_EXPORT struct face {
+struct face {
 	int p1;
 	int p2;
 	int p3;
 };
 
-DLL_EXPORT struct object {
+struct object {
 	struct point* points;
 	struct face* faces;
 };
