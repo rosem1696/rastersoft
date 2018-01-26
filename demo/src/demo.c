@@ -26,6 +26,10 @@ void cleanup_sdl();
 
 int main(int argc, char *argv[]) {
 	init_sdl_vars();
+	
+	SDL_Thread * command_thread;
+	command_thread = SDL_CreateThread()
+
 	SDL_Event ev;
 	while (!quit) {	
 		//Poll and distribute events until all have been handled 
@@ -38,6 +42,7 @@ int main(int argc, char *argv[]) {
 			}
 		}
 		//SDL_Delay(10);
+		
 	}
 	return 0;
 }
