@@ -11,26 +11,26 @@
 
 //Local Headers
 #include "demo.h"
+#include "commands.h"
 #include "system_vars.h"
 
-//Local Function Definitions
-
+//Local Functions
 bool init_sdl_vars();
 void cleanup_sdl();
 
-//Global Functions
-
-
-
-//Local Functions
+//Function Implementations
 
 int main(int argc, char *argv[]) {
+	//Initial SDL component setup
 	init_sdl_vars();
 	
+	//Start command listening thread
 	SDL_Thread * command_thread;
-	command_thread = SDL_CreateThread()
+	command_thread = SDL_CreateThread(cmd_watch, CMD_THREAD_NAME, (void *) NULL);
 
 	SDL_Event ev;
+	
+	//Main Loop
 	while (!quit) {	
 		//Poll and distribute events until all have been handled 
 		while (SDL_PollEvent(&ev)) {
@@ -44,14 +44,21 @@ int main(int argc, char *argv[]) {
 		//SDL_Delay(10);
 		
 	}
+
+	//join with command thread
+	SDL_WaitThread(command_thread, NULL);
+
+
 	return 0;
 }
 
 bool init_sdl_vars() {
-	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+	//initialize
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) < 0) {
 		fprintf(stderr, "SDL couldn't initialize! SDL_Error: %s\n", SDL_GetError());
 		return true;
 	}
+	
 	demo_window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 	if (!demo_window) {
 		fprintf(stderr, "SDL couldn't create a window! SDL_Error: %s\n", SDL_GetError());
@@ -72,6 +79,10 @@ void cleanup_sdl() {
 	SDL_DestroyRenderer(demo_renderer);
 	SDL_DestroyWindow(demo_window);
 	SDL_Quit();
+}
+
+void cmd_quit(int num_ops, struct Cmd_Option * ops, int * num_p, char * params) {
+
 }
 
 /*SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);

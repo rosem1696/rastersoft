@@ -8,4 +8,9 @@
 
 #define WINDOW_TITLE "Rastersoft Demo"
 
+#define CMD_QUIT_NAME "quit"
+#define CMD_QUIT_FUNC "Exits the application"
+
+void cmd_quit(int num_ops, struct Cmd_Option * ops, int * num_p, char * params);
+
 #endif
