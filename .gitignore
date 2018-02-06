@@ -1,5 +1,3 @@
 bin/
 build/
-SDL2/
-winBuildScripts/
 .ycm_extra_conf.py
