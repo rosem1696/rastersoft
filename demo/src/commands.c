@@ -28,7 +28,7 @@ char cmd_buffer[200];
 
 int cmd_watch(void * params) {
 	//setup command array
-	init_commands();
+	init_cmds();
 
 	//command watch loop
 	while (!quit) {
@@ -36,7 +36,7 @@ int cmd_watch(void * params) {
 	}
 
 	//free memory from comand array
-	free_commands();
+	free_cmds();
 }
 
 void add_cmd(const char * name, const char * func, void(*handler)(int *, struct Cmd_Option *, int *, char *)) {
