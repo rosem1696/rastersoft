@@ -1,8 +1,15 @@
+#set paths
 set(DEMO_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/inc)
 set(DEMO_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
+#find SDL2 library
 find_package(SDL2 REQUIRED)
+
+#copy SDL2.dll to binary directory
+find_file(SDL2_DLL sdl2.dll HINTS ${SDL2_INCLUDE_DIR}/../lib/x64/)
+file(COPY ${SDL2_DLL} DESTINATION ${PROJECT_BINARY_DIR}/Debug)
+file(COPY ${SDL2_DLL} DESTINATION ${PROJECT_BINARY_DIR}/Release)
 
 #get all source and header files recursively
 file(GLOB_RECURSE SRC_FILES ${DEMO_SOURCE_DIR}/*.c)
