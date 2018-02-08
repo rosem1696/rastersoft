@@ -1,37 +1,37 @@
-//Standard Library
+/*** Standard Library ***/
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include <stdbool.h>
 
-//External Libraries
+/*** External Libraries ***/
 #include <SDL.h>
 #include <rastersoft.h>
 #include <rast_matrix.h>
 
-//Local Headers
+/*** Local Headers ***/
 #include "demo.h"
-#include "commands.h"
+#include "cmd_handler.h"
 #include "system_vars.h"
 
-//Local Functions
+/*** Local Functions ***/
 bool init_sdl_vars();
 void cleanup_sdl();
 
-//Function Implementations
+/*** Function Implementations ***/
 
 int main(int argc, char *argv[]) {
 	//Initial SDL component setup
 	init_sdl_vars();
-	
+
 	//Start command listening thread
 	SDL_Thread * command_thread;
-	command_thread = SDL_CreateThread(cmd_watch, CMD_THREAD_NAME, (void *) NULL);
+	command_thread = SDL_CreateThread(cmd_watch, CMD_THREAD_NAME, (void *)NULL);
 
 	SDL_Event ev;
-	
+
 	//Main Loop
-	while (!quit) {	
+	while (!quit) {
 		//Poll and distribute events until all have been handled 
 		while (SDL_PollEvent(&ev)) {
 			switch (ev.type) {
@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
 			}
 		}
 		//SDL_Delay(10);
-		
+
 	}
 
 	//join with command thread
@@ -58,7 +58,7 @@ bool init_sdl_vars() {
 		fprintf(stderr, "SDL couldn't initialize! SDL_Error: %s\n", SDL_GetError());
 		return true;
 	}
-	
+
 	demo_window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 	if (!demo_window) {
 		fprintf(stderr, "SDL couldn't create a window! SDL_Error: %s\n", SDL_GetError());
@@ -81,9 +81,6 @@ void cleanup_sdl() {
 	SDL_Quit();
 }
 
-void cmd_quit(int num_ops, struct Cmd_Option * ops, int * num_p, char * params) {
-
-}
 
 /*SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
 SDL_RenderClear(renderer);

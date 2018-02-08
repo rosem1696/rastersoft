@@ -1,5 +1,15 @@
-#ifndef commands_h
-#define commands_h
+#ifndef cmd_handler_h
+#define cmd_handler_h
+
+//Global Defines
+
+//Global Structs
+
+//Global Enums
+
+//Extern Variables
+
+//Global Functions
 
 #define CMD_THREAD_NAME "Command_Watch"
 #define NUM_COMMANDS 1
@@ -16,5 +26,6 @@ struct Cmd_Option {
 };
 
 int cmd_watch(void * params);
+void free_cmds();
 
 #endif
