@@ -1,5 +1,14 @@
-#ifndef header_h
-#define header_h
+/**
+ * @file template.h
+ * @author Mitchell Rose
+ * @date 1 Jan 2018
+ * @brief Description
+ * @copyright Copyright (c) 2018 Mitchell Rose
+ * @license MIT License
+ */
+
+#ifndef template_h
+#define template_h
 
 /*** Standard Library ***/
 
@@ -17,4 +26,4 @@
 
 /*** Global Functions ***/
 
-#endif //header_h
+#endif //template_h
