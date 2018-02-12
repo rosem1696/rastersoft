@@ -56,7 +56,14 @@ int cmd_watch(void * params) {
 		printf(">");
 		char * str = fgets(cmd_buffer, CMD_BUF_SIZE, stdin);
 		if (str) {
-			
+			char * tok = strtok(cmd_buffer, " ");
+			printf("%s\n", tok);
+			while(tok) {
+				tok = strtok(NULL , " ");
+				if (tok) {
+					printf("%s\n", tok);
+				}
+			}
 		}
 	}
 

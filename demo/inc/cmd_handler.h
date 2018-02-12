@@ -13,7 +13,10 @@
 /*** Standard Library ***/
 /*** External Libraries ***/
 /*** Local Headers ***/
+
 /*** Global Defines ***/
+#define CMD_THREAD_NAME "Command_Thread"
+
 /*** Global Enums ***/
 
 /*** Global Structs ***/
