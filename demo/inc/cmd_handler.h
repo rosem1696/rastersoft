@@ -28,12 +28,19 @@
  * 'name' - the alias that the user can enter to call the command.
  * 'func'- a brief description of what the command does. Displayed with 'help'.
  * 'handler' - function pointer called when the command is entered. Accepts options
- * 		and parameters (counts for each). Has no return value.
+  *	and parameters (counts for each). Has no return value.
  */
 struct Command {
 	char * name;
 	char * func;
-	void(*handler)(int *, struct Cmd_Option *, int *, char *);
+	void(*handler)(struct Cmd_Input*);
+};
+
+struct Cmd_Input {
+	int num_op;
+	struct Cmd_Option * ops;
+	int num_param;
+	char ** params;
 };
 
 /**

@@ -31,6 +31,7 @@
  * @param num_p Unused
  * @param params Unused
  */
-void cmd_quit(int num_ops, struct Cmd_Option * ops, int * num_p, char * params) {
+void cmd_quit(struct Cmd_Input in) {
+
 
 }

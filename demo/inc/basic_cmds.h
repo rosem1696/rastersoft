@@ -11,20 +11,17 @@
 #define basic_cmds_h
 
 /*** Standard Library ***/
-
 /*** External Libraries ***/
 
 /*** Local Headers ***/
+#include "cmd_handler.h"
 
 /*** Global Defines ***/
-
 /*** Global Enums ***/
-
 /*** Global Structs ***/
-
 /*** Extern Variables ***/
 
 /*** Global Functions ***/
-void cmd_quit(int num_ops, struct Cmd_Option * ops, int * num_p, char * params);
+void cmd_quit(struct Cmd_Input in);
 
 #endif //basic_cmds_h
