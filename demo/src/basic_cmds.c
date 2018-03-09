@@ -9,6 +9,7 @@
 
 /*** Standard Library ***/
 /*** External Libraries ***/
+#include <SDL.h>
 
 /*** Local Headers ***/
 #include "basic_cmds.h"
@@ -31,7 +32,30 @@
  * @param num_p Unused
  * @param params Unused
  */
-void cmd_quit(struct Cmd_Input in) {
+void cmd_quit(struct Cmd_Input * input) {
+	int i;
+	for (i = 0; i < input->num_op; i++) {
+		switch (input->ops[i].option) {
+		case 'h':
+			printf("Usage: quit\n");
+			printf("%s.\n", CMD_QUIT_FUNC);
+			return;
+		default:
+			printf("Unknown usage of quit\n");
+			printf("Usage: quit\n");
+			return;
+		}
+	}
 
+	if (input->num_param > 0) {
+		printf("Unknown usage of quit\n");
+		printf("Usage: quit\n");
+		return;
+	}
 
+	printf("Exiting\n");
+
+	SDL_Event sdlevent;
+	sdlevent.type = SDL_QUIT;
+	SDL_PushEvent(&sdlevent);
 }

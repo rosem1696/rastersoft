@@ -49,7 +49,7 @@ int main(int argc, char *argv[]) {
 	//Start command listening thread
 	SDL_Thread * command_thread;
 	command_thread = SDL_CreateThread(cmd_watch, CMD_THREAD_NAME, (void *)NULL);
-
+	SDL_DetachThread(command_thread);
 	SDL_Event ev;
 
 	//Main Loop
@@ -66,10 +66,6 @@ int main(int argc, char *argv[]) {
 		//SDL_Delay(10);
 
 	}
-
-	//join with command thread
-	SDL_WaitThread(command_thread, NULL);
-
 
 	return 0;
 }

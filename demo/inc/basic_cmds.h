@@ -17,11 +17,14 @@
 #include "cmd_handler.h"
 
 /*** Global Defines ***/
+#define CMD_QUIT_NAME "quit"
+#define CMD_QUIT_FUNC "Exits the application"
+
 /*** Global Enums ***/
 /*** Global Structs ***/
 /*** Extern Variables ***/
 
 /*** Global Functions ***/
-void cmd_quit(struct Cmd_Input in);
+void cmd_quit(struct Cmd_Input * input);
 
 #endif //basic_cmds_h

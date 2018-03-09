@@ -22,9 +22,6 @@
 
 #define WINDOW_TITLE "Rastersoft Demo"
 
-#define CMD_QUIT_NAME "quit"
-#define CMD_QUIT_FUNC "Exits the application"
-
 /*** Global Enums ***/
 /*** Global Structs ***/
 /*** Extern Variables ***/

@@ -19,9 +19,10 @@
 #include "cmd_handler.h"
 #include "demo.h"
 #include "system_vars.h"
+#include "basic_cmds.h"
 
 /*** Local Defines ***/
-#define NUM_COMMANDS 1
+#define NUM_COMMANDS 2
 #define CMD_BUF_SIZE 200
 #define CMD_HELP_NAME "help"
 #define CMD_HELP_FUNC "Displays all available commands"
@@ -56,7 +57,7 @@ void init_cmds() {
 	add_cmd(CMD_HELP_NAME, CMD_HELP_FUNC, cmd_help);
 
 	/* Basic */
-
+	add_cmd(CMD_QUIT_NAME, CMD_QUIT_FUNC, cmd_quit);
 	//To add a new command, add an add cmd call under an existing or new category
 }
 
@@ -71,8 +72,11 @@ int cmd_watch(void * params) {
 	//setup command array
 	init_cmds();
 
+	//print welcome message
+	printf("Rastersoft Demo Command Prompt\n");
+
 	//command watch loop
-	while (true) {
+	while (!quit) {
 		//get command input
 		printf("\n>");
 		char * str = fgets(cmd_buffer, CMD_BUF_SIZE, stdin);
@@ -101,7 +105,7 @@ int cmd_watch(void * params) {
 
 	//TODO - Move this to main thread
 	//free memory from comand array
-	//free_cmds();
+	free_cmds();
 	return 0;
 }
 
