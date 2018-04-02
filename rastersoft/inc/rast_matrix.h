@@ -4,32 +4,35 @@
 #include "rast_defines.h"
 
 
-struct transform {
+struct rast_transform {
 	float matrix[4][4];
 };
 
-struct point {
+struct rast_vector {
 	float matrix[4];
-
-};
-
-struct face {
-	int p1;
-	int p2;
-	int p3;
-};
-
-struct object {
-	struct point* points;
-	struct face* faces;
 };
 
 
-DLL_EXPORT void multTransforms(struct transform* dest, struct transform* mat1, struct transform* mat2);
-DLL_EXPORT void transformPoint(struct point* dest, struct transform* trans, struct point* pnt);
-DLL_EXPORT void getProjectionMat(struct transform* mat, float nearPlane, float farPlane);
-DLL_EXPORT void getTranslateMat(struct transform* mat, float objx, float objy, float objz);
-DLL_EXPORT void printMatrix(struct transform* mat);
-DLL_EXPORT void printPoints(struct point* pts, int count);
+//Matrix Multiplication
+DLL_EXPORT void rast_multTrans(struct rast_transform* dest, struct rast_transform* mat1, struct rast_transform* mat2);
+DLL_EXPORT void rast_transVector(struct rast_vector* dest, struct rast_transform* trans, struct rast_vector* vec);
+
+//Vector Operations
+DLL_EXPORT float rast_dotProduct(struct rast_vector* vec1, struct rast_vector* vec2);
+DLL_EXPORT void rast_addVectors(struct rast_vector* dest, struct rast_vector* vec1, struct rast_vector* vec2);
+DLL_EXPORT void rast_subVectors(struct rast_vector* dest, struct rast_vector* vec1, struct rast_vector* vec2);
+
+//Transform Operations
+DLL_EXPORT void rast_addTransforms(struct rast_transform* dest, struct rast_transform* mat1, struct rast_transform* vec2);
+DLL_EXPORT void rast_subTransforms(struct rast_transform* dest, struct rast_transform* mat1, struct rast_transform* mat2);
+
+//Vector Generation
+DLL_EXPORT void rast_oneVector(struct rast_vector * dest);
+DLL_EXPORT void rast_zeroVector(struct rast_vector * dest);
+
+//Transform Generation
+DLL_EXPORT void rast_identityTransform(struct rast_transform * dest);
+DLL_EXPORT void rast_oneTransform(struct rast_transform * dest);
+DLL_EXPORT void rast_zeroTransform(struct rast_transform * dest);
 
 #endif
