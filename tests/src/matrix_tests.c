@@ -35,7 +35,6 @@ void test_TransGen() {
 	//zeroTransform
 	rast_zeroTransform(&transform);
 	bool zero_pass = true;
-	int i, j;
 	for (i = 0; i < 4 && zero_pass; i++) {
 		for (j = 0; j < 4 && zero_pass; j++) {
 			zero_pass = transform.matrix[i][j] == 0;
@@ -50,7 +49,6 @@ void test_TransGen() {
 	//identityTransform
 	rast_identityTransform(&transform);
 	bool iden_pass = true;
-	int i, j;
 	for (i = 0; i < 4 && iden_pass; i++) {
 		for (j = 0; j < 4 && iden_pass; j++) {
 			if (i == j)
