@@ -1,6 +1,10 @@
+#include "acutest.h"
 #include "matrix_tests.h"
 
-int main() {
-	run_matrix_tests();
-	return 0;
-}
+TEST_LIST = {
+	//Matrix Tests
+	{ "matrix_transformOne", test_matrix_transformOne },
+	{ "matrix_transformZero", test_matrix_transformZero },
+	{ "matrix_identity", test_matrix_identity },
+	{ NULL, NULL }
+};

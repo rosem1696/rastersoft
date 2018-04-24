@@ -17,7 +17,7 @@ struct rast_vector {
 DLL_EXPORT void rast_multTrans(struct rast_transform* dest, struct rast_transform* mat1, struct rast_transform* mat2);
 DLL_EXPORT void rast_transVector(struct rast_vector* dest, struct rast_transform* trans, struct rast_vector* vec);
 
-//Vector Operations
+//Vertex Operations
 DLL_EXPORT float rast_dotProduct(struct rast_vector* vec1, struct rast_vector* vec2);
 DLL_EXPORT void rast_addVectors(struct rast_vector* dest, struct rast_vector* vec1, struct rast_vector* vec2);
 DLL_EXPORT void rast_subVectors(struct rast_vector* dest, struct rast_vector* vec1, struct rast_vector* vec2);
