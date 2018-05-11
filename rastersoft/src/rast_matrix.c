@@ -1,51 +1,53 @@
-#include <stdio.h>
-#include <stdint.h>
-#include <stdbool.h>
-#include <string.h>
+#include <math.h>
+#include <stdlib.h>
 
 #include "rast_matrix.h"
 
 
 //Matrix Multiplication
 void rast_multTrans(struct rast_transform* dest, struct rast_transform* mat1, struct rast_transform* mat2) {
+	struct rast_transform tmp;
 	int i, j, k;
 	for (i = 0; i < 4; i++) {
 		for (j = 0; j < 4; j++) {
-			dest->matrix[i][j] = 0;
+			tmp.matrix[i][j] = 0;
 			for (k = 0; k < 4; k++) {
-				dest->matrix[i][j] += mat1->matrix[i][k] * mat2->matrix[k][j];
+				tmp.matrix[i][j] += mat1->matrix[i][k] * mat2->matrix[k][j];
 			}
 		}
 	}
+	memcpy(dest, &tmp, sizeof(struct rast_transform));
 }
 
-void rast_transVector(struct rast_vector* dest, struct rast_transform* trans, struct rast_vector* vec) {
+void rast_transVertex(struct rast_vertex* dest, struct rast_vertex* v, struct rast_transform* trans) {
+	struct rast_vertex tmp;
 	int i, j;
 	for (i = 0; i < 4; i++) {
-		dest->matrix[i] = 0;
+		tmp.matrix[i] = 0;
 		for (j = 0; j < 4; ++j) {
-			dest->matrix[i] += trans->matrix[i][j] * vec->matrix[j];
+			tmp.matrix[i] += v->matrix[j] * trans->matrix[j][i];
 		}
 	}
+	memcpy(dest, &tmp, sizeof(struct rast_vertex));
 }
 
 
-//Vector Operations
-float rast_dotProduct(struct rast_vector* vec1, struct rast_vector* vec2) {
-	return (vec1->matrix[0] * vec2->matrix[0]) + (vec1->matrix[1] * vec2->matrix[1]) + (vec1->matrix[2] * vec2->matrix[2]) + (vec1->matrix[3] * vec2->matrix[3]);
+//Vertex Operations
+float rast_dotProduct(struct rast_vertex* v1, struct rast_vertex* v2) {
+	return (v1->matrix[0] * v2->matrix[0]) + (v1->matrix[1] * v2->matrix[1]) + (v1->matrix[2] * v2->matrix[2]) + (v1->matrix[3] * v2->matrix[3]);
 }
 
-void rast_addVectors(struct rast_vector* dest, struct rast_vector* vec1, struct rast_vector* vec2) {
+void rast_addVertexs(struct rast_vertex* dest, struct rast_vertex* v1, struct rast_vertex* v2) {
 	int i;
 	for (i = 0; i < 4; i++) {
-		dest->matrix[i] = vec1->matrix[i] + vec2->matrix[i];
+		dest->matrix[i] = v1->matrix[i] + v2->matrix[i];
 	}
 }
 
-void rast_subVectors(struct rast_vector* dest, struct rast_vector* vec1, struct rast_vector* vec2) {
+void rast_subVertexs(struct rast_vertex* dest, struct rast_vertex* v1, struct rast_vertex* v2) {
 	int i;
 	for (i = 0; i < 4; i++) {
-		dest->matrix[i] = vec1->matrix[i] - vec2->matrix[i];
+		dest->matrix[i] = v1->matrix[i] - v2->matrix[i];
 	}
 }
 
@@ -68,18 +70,18 @@ void rast_subTransforms(struct rast_transform* dest, struct rast_transform* mat1
 	}
 }
 
-//Vector Generation
-void rast_oneVector(struct rast_vector* dest) {
+//Vertex Generation
+void rast_oneVertex(struct rast_vertex* dest) {
 	int i;
 	for (i = 0; i < 4; i++) {
 		dest->matrix[i] = 1;
 	}
 }
 
-void rast_zeroVector(struct rast_vector* dest) {
+void rast_zeroVertex(struct rast_vertex* dest) {
 	int i;
 	for (i = 0; i < 4; i++) {
-		dest->matrix[i] = 1;
+		dest->matrix[i] = 0;
 	}
 }
 
