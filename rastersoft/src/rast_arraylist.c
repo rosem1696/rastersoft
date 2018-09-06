@@ -55,31 +55,53 @@ bool rast_arraylist_initSize(struct rast_arraylist* list, unsigned int item_size
 	}
 }
 
-bool rast_arraylist_insert(struct rast_arraylist* list, unsigned int index, void * item) {
-	
+void rast_arraylist_insert(struct rast_arraylist* list, unsigned int index, void * item) {
+	if (index < list->length) {
+		ensureSize(list);
+		void * indexPtr = getIndexPointer(list, index);
+		void * moveDest = getIndexPointer(list, index + 1);
+		memmove(moveDest, indexPtr, list->item_size * (list->length - index));
+		memcpy(indexPtr, item, list->item_size);
+		list->length++;
+	} else if (index == list->length) {
+		rast_arraylist_push(list, item);
+	}
 }
 
-bool rast_arraylist_remove(struct rast_arraylist* list, unsigned int index, void * item) {
-
+void rast_arraylist_remove(struct rast_arraylist* list, unsigned int index) {
+	if (index < list->length - 1) {
+		void * indexPtr = getIndexPointer(list, index);
+		void * moveStart = getIndexPointer(list, index - 1);
+		memmove(indexPtr, moveStart, list->item_size * (list->length - index - 1));
+		list->length--;
+	} else if (index == list->length - 1) {
+		list->length--;
+	}
 }
 
 void rast_arraylist_push(struct rast_arraylist* list, void * item) {
 	ensureSize(list);
 	memcpy(getIndexPointer(list, list->length), item, list->item_size);
+	list->length++;
 }
 
-void* rast_arraylist_pop(struct rast_arraylist* list, void * item) {
-
+void rast_arraylist_pop(struct rast_arraylist* list, void * dest) {
+	if (list->length > 0) {
+		memcpy(dest, getIndexPointer(list, list->length), list->item_size);
+		list->length--;
+	}
 }
 
-void* rast_arraylist_get(struct rast_arraylist* list, unsigned int index, void * item) {
-
+void* rast_arraylist_get(struct rast_arraylist* list, unsigned int index) {
+	return (index < list->length)
+		? getIndexPointer(list, index)
+		: NULL;
 }
 
-void rast_arraylist_clear(struct rast_arraylist* list, unsigned int index, void * item) {
-
+void rast_arraylist_clear(struct rast_arraylist* list) {
+	list->length = 0;
 }
 
-void rast_arraylist_destroy(struct rast_arraylist* list, unsigned int index, void * item) {
-
+void rast_arraylist_destroy(struct rast_arraylist* list) {
+	free(list->list);
 }

@@ -21,11 +21,13 @@
 /*** Global Structs ***/
 
 /* Arraylist datastructure
+ * item_size : size in bytes of single item
  * length : number of items in list
  * allocated : number of items list can currently hold
  */
 struct rast_arraylist {
-	void * data;
+	void * list;
+	unsigned int item_size;
 	unsigned int length;
 	unsigned int allocated;
 };
@@ -34,14 +36,14 @@ struct rast_arraylist {
 
 /*** Global Functions ***/
 
-void rast_arraylist_init(struct rast_arraylist* list);
+void rast_arraylist_init(struct rast_arraylist* list, unsigned int item_size);
 bool rast_arraylist_initSize(struct rast_arraylist* list, unsigned int item_size, unsigned int total_length);
 bool rast_arraylist_insert(struct rast_arraylist* list, unsigned int index, void * item);
 bool rast_arraylist_remove(struct rast_arraylist* list, unsigned int index);
 void rast_arraylist_push(struct rast_arraylist* list, void * item);
 void* rast_arraylist_pop(struct rast_arraylist* list, void * item);
-void* rast_arraylist_get(struct rast_arraylist* list, unsigned int index, void * item);
-void rast_arraylist_clear(struct rast_arraylist* list, unsigned int index, void * item);
-void rast_arraylist_destroy(struct rast_arraylist* list, unsigned int index, void * item);
+void* rast_arraylist_get(struct rast_arraylist* list, unsigned int index);
+void rast_arraylist_clear(struct rast_arraylist* list);
+void rast_arraylist_destroy(struct rast_arraylist* list);
 
 #endif //rast_arraylist_h
