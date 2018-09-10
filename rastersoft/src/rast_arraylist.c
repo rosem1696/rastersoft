@@ -9,85 +9,76 @@
 
 /*** Standard Library ***/
 #include <stdlib.h>
-#include <stdbool.h>
-
-/*** External Libraries ***/
-
-/*** Local Headers ***/
 #include "rast_arraylist.h"
-
-/*** Local Defines ***/
-/*** Local Enums ***/
-/*** Local Structs ***/
-/*** Local Variables ***/
 
 /*** Local Functions ***/
 void ensureSize(struct rast_arraylist* list) {
 	if (list->length == list->allocated) {
 		list->allocated *= 2;
-		void * doubled_list = realloc(list->list, list->allocated * list->item_size);
+		void* doubled_list = realloc(list->list, list->allocated * list->item_size);
 		list->list = doubled_list;
 	}
 }
 
 void* getIndexPointer(struct rast_arraylist* list, int index) {
-	return ((char) list->list + (list->item_size * index));
+	return (((char*) list->list) + (list->item_size * index));
 }
 
-/*** Function Implementations ***/
+/*** Exported Functions ***/
 
-void rast_arraylist_init(struct rast_arraylist* list, unsigned int item_size) {
+void rast_arraylist_init(struct rast_arraylist* list, size_t item_size) {
 	list->item_size = item_size;
 	list->length = 0;
 	list->allocated = 10;
 	list->list = malloc(list->item_size * list->allocated);
 }
 
-bool rast_arraylist_initSize(struct rast_arraylist* list, unsigned int item_size, unsigned int total_length) {
+void rast_arraylist_initSize(struct rast_arraylist* list, size_t item_size, unsigned int total_length) {
 	if (total_length > 0) {
 		list->item_size = item_size;
 		list->length = 0;
 		list->allocated = total_length;
 		list->list = malloc(list->item_size * list->allocated);
-		return true;
-	} else {
-		return false;
 	}
 }
 
-void rast_arraylist_insert(struct rast_arraylist* list, unsigned int index, void * item) {
-	if (index < list->length) {
-		ensureSize(list);
-		void * indexPtr = getIndexPointer(list, index);
-		void * moveDest = getIndexPointer(list, index + 1);
-		memmove(moveDest, indexPtr, list->item_size * (list->length - index));
-		memcpy(indexPtr, item, list->item_size);
-		list->length++;
-	} else if (index == list->length) {
-		rast_arraylist_push(list, item);
+void rast_arraylist_insert(struct rast_arraylist* list, unsigned int index, void* item) {
+	if (item) {
+		if (index < list->length) {
+			ensureSize(list);
+			void * indexPtr = getIndexPointer(list, index);
+			void * moveDest = getIndexPointer(list, index + 1);
+			memmove(moveDest, indexPtr, list->item_size * (list->length - index));
+			memcpy(indexPtr, item, list->item_size);
+			list->length++;
+		} else if (index == list->length) {
+			rast_arraylist_push(list, item);
+		}
 	}
 }
 
 void rast_arraylist_remove(struct rast_arraylist* list, unsigned int index) {
 	if (index < list->length - 1) {
-		void * indexPtr = getIndexPointer(list, index);
-		void * moveStart = getIndexPointer(list, index - 1);
-		memmove(indexPtr, moveStart, list->item_size * (list->length - index - 1));
+		void * moveDest = getIndexPointer(list, index);
+		void * moveStart = getIndexPointer(list, index + 1);
+		memmove(moveDest, moveStart, list->item_size * (list->length - index - 1));
 		list->length--;
 	} else if (index == list->length - 1) {
 		list->length--;
 	}
 }
 
-void rast_arraylist_push(struct rast_arraylist* list, void * item) {
-	ensureSize(list);
-	memcpy(getIndexPointer(list, list->length), item, list->item_size);
-	list->length++;
+void rast_arraylist_push(struct rast_arraylist* list, void* item) {
+	if (item) {
+		ensureSize(list);
+		memcpy(getIndexPointer(list, list->length), item, list->item_size);
+		list->length++;
+	}
 }
 
-void rast_arraylist_pop(struct rast_arraylist* list, void * dest) {
+void rast_arraylist_pop(struct rast_arraylist* list, void* dest) {
 	if (list->length > 0) {
-		memcpy(dest, getIndexPointer(list, list->length), list->item_size);
+		memcpy(dest, getIndexPointer(list, list->length - 1), list->item_size);
 		list->length--;
 	}
 }

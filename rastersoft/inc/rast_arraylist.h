@@ -10,15 +10,11 @@
 #ifndef rast_arraylist_h
 #define rast_arraylist_h
 
-/*** Standard Library ***/
-#include <stdbool.h>
+/*** Headers ***/
 
-/*** External Libraries ***/
-/*** Local Headers ***/
-/*** Global Defines ***/
-/*** Global Enums ***/
+#include "rast_defines.h"
 
-/*** Global Structs ***/
+/*** Structs ***/
 
 /* Arraylist datastructure
  * item_size : size in bytes of single item
@@ -32,18 +28,16 @@ struct rast_arraylist {
 	unsigned int allocated;
 };
 
-/*** Extern Variables ***/
+/*** Exported Functions ***/
 
-/*** Global Functions ***/
-
-void rast_arraylist_init(struct rast_arraylist* list, unsigned int item_size);
-bool rast_arraylist_initSize(struct rast_arraylist* list, unsigned int item_size, unsigned int total_length);
-bool rast_arraylist_insert(struct rast_arraylist* list, unsigned int index, void * item);
-bool rast_arraylist_remove(struct rast_arraylist* list, unsigned int index);
-void rast_arraylist_push(struct rast_arraylist* list, void * item);
-void* rast_arraylist_pop(struct rast_arraylist* list, void * item);
-void* rast_arraylist_get(struct rast_arraylist* list, unsigned int index);
-void rast_arraylist_clear(struct rast_arraylist* list);
-void rast_arraylist_destroy(struct rast_arraylist* list);
+DLL_EXPORT void rast_arraylist_init(struct rast_arraylist* list, size_t item_size);
+DLL_EXPORT void rast_arraylist_initSize(struct rast_arraylist* list, size_t item_size, unsigned int total_length);
+DLL_EXPORT void rast_arraylist_insert(struct rast_arraylist* list, unsigned int index, void * item);
+DLL_EXPORT void rast_arraylist_remove(struct rast_arraylist* list, unsigned int index);
+DLL_EXPORT void rast_arraylist_push(struct rast_arraylist* list, void * item);
+DLL_EXPORT void rast_arraylist_pop(struct rast_arraylist* list, void * dest);
+DLL_EXPORT void* rast_arraylist_get(struct rast_arraylist* list, unsigned int index);
+DLL_EXPORT void rast_arraylist_clear(struct rast_arraylist* list);
+DLL_EXPORT void rast_arraylist_destroy(struct rast_arraylist* list);
 
 #endif //rast_arraylist_h
