@@ -1,5 +1,5 @@
 /**
- * @file template.h
+ * @file demo.h
  * @author Mitchell Rose
  * @date 1 Jan 2018
  * @brief Main header for demo application

@@ -5,8 +5,8 @@
 
 
 //Matrix Multiplication
-void rast_multTrans(struct rast_transform* dest, struct rast_transform* mat1, struct rast_transform* mat2) {
-	struct rast_transform tmp;
+void rast_multTrans(struct RastTransform* dest, struct RastTransform* mat1, struct RastTransform* mat2) {
+	struct RastTransform tmp;
 	int i, j, k;
 	for (i = 0; i < 4; i++) {
 		for (j = 0; j < 4; j++) {
@@ -16,11 +16,11 @@ void rast_multTrans(struct rast_transform* dest, struct rast_transform* mat1, st
 			}
 		}
 	}
-	memcpy(dest, &tmp, sizeof(struct rast_transform));
+	memcpy(dest, &tmp, sizeof(struct RastTransform));
 }
 
-void rast_transVertex(struct rast_vertex* dest, struct rast_vertex* v, struct rast_transform* trans) {
-	struct rast_vertex tmp;
+void rast_transVector(struct RastVector* dest, struct RastVector* v, struct RastTransform* trans) {
+	struct RastVector tmp;
 	int i, j;
 	for (i = 0; i < 4; i++) {
 		tmp.matrix[i] = 0;
@@ -28,23 +28,23 @@ void rast_transVertex(struct rast_vertex* dest, struct rast_vertex* v, struct ra
 			tmp.matrix[i] += v->matrix[j] * trans->matrix[j][i];
 		}
 	}
-	memcpy(dest, &tmp, sizeof(struct rast_vertex));
+	memcpy(dest, &tmp, sizeof(struct RastVector));
 }
 
 
-//Vertex Operations
-float rast_dotProduct(struct rast_vertex* v1, struct rast_vertex* v2) {
+//Vector Operations
+float rast_dotProduct(struct RastVector* v1, struct RastVector* v2) {
 	return (v1->matrix[0] * v2->matrix[0]) + (v1->matrix[1] * v2->matrix[1]) + (v1->matrix[2] * v2->matrix[2]) + (v1->matrix[3] * v2->matrix[3]);
 }
 
-void rast_addVertexs(struct rast_vertex* dest, struct rast_vertex* v1, struct rast_vertex* v2) {
+void rast_addVectors(struct RastVector* dest, struct RastVector* v1, struct RastVector* v2) {
 	int i;
 	for (i = 0; i < 4; i++) {
 		dest->matrix[i] = v1->matrix[i] + v2->matrix[i];
 	}
 }
 
-void rast_subVertexs(struct rast_vertex* dest, struct rast_vertex* v1, struct rast_vertex* v2) {
+void rast_subVectors(struct RastVector* dest, struct RastVector* v1, struct RastVector* v2) {
 	int i;
 	for (i = 0; i < 4; i++) {
 		dest->matrix[i] = v1->matrix[i] - v2->matrix[i];
@@ -52,7 +52,7 @@ void rast_subVertexs(struct rast_vertex* dest, struct rast_vertex* v1, struct ra
 }
 
 //Transform Operations
-void rast_addTransforms(struct rast_transform* dest, struct rast_transform* mat1, struct rast_transform* mat2) {
+void rast_addTransforms(struct RastTransform* dest, struct RastTransform* mat1, struct RastTransform* mat2) {
 	int i, j;
 	for (i = 0; i < 4; i++) {
 		for (j = 0; j < 4; j++) {
@@ -61,7 +61,7 @@ void rast_addTransforms(struct rast_transform* dest, struct rast_transform* mat1
 	}
 }
 
-void rast_subTransforms(struct rast_transform* dest, struct rast_transform* mat1, struct rast_transform* mat2) {
+void rast_subTransforms(struct RastTransform* dest, struct RastTransform* mat1, struct RastTransform* mat2) {
 	int i, j;
 	for (i = 0; i < 4; i++) {
 		for (j = 0; j < 4; j++) {
@@ -70,15 +70,15 @@ void rast_subTransforms(struct rast_transform* dest, struct rast_transform* mat1
 	}
 }
 
-//Vertex Generation
-void rast_oneVertex(struct rast_vertex* dest) {
+//Vector Generation
+void rast_oneVector(struct RastVector* dest) {
 	int i;
 	for (i = 0; i < 4; i++) {
 		dest->matrix[i] = 1;
 	}
 }
 
-void rast_zeroVertex(struct rast_vertex* dest) {
+void rast_zeroVector(struct RastVector* dest) {
 	int i;
 	for (i = 0; i < 4; i++) {
 		dest->matrix[i] = 0;
@@ -86,7 +86,7 @@ void rast_zeroVertex(struct rast_vertex* dest) {
 }
 
 //Transform Generation
-void rast_identityTransform(struct rast_transform* dest) {
+void rast_identityTransform(struct RastTransform* dest) {
 	int i, j;
 	for (i = 0; i < 4; i++) {
 		for (j = 0; j < 4; j++) {
@@ -99,7 +99,7 @@ void rast_identityTransform(struct rast_transform* dest) {
 	}
 }
 
-void rast_oneTransform(struct rast_transform* dest) {
+void rast_oneTransform(struct RastTransform* dest) {
 	int i, j;
 	for (i = 0; i < 4; i++) {
 		for (j = 0; j < 4; j++) {
@@ -108,7 +108,7 @@ void rast_oneTransform(struct rast_transform* dest) {
 	}
 }
 
-void rast_zeroTransform(struct rast_transform* dest) {
+void rast_zeroTransform(struct RastTransform* dest) {
 	int i, j;
 	for (i = 0; i < 4; i++) {
 		for (j = 0; j < 4; j++) {

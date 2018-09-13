@@ -21,7 +21,7 @@
  * length : number of items in list
  * allocated : number of items list can currently hold
  */
-struct rast_arraylist {
+struct RastArraylist {
 	void * list;
 	unsigned int item_size;
 	unsigned int length;
@@ -30,14 +30,14 @@ struct rast_arraylist {
 
 /*** Exported Functions ***/
 
-DLL_EXPORT void rast_arraylist_init(struct rast_arraylist* list, size_t item_size);
-DLL_EXPORT void rast_arraylist_initSize(struct rast_arraylist* list, size_t item_size, unsigned int total_length);
-DLL_EXPORT void rast_arraylist_insert(struct rast_arraylist* list, unsigned int index, void * item);
-DLL_EXPORT void rast_arraylist_remove(struct rast_arraylist* list, unsigned int index);
-DLL_EXPORT void rast_arraylist_push(struct rast_arraylist* list, void * item);
-DLL_EXPORT void rast_arraylist_pop(struct rast_arraylist* list, void * dest);
-DLL_EXPORT void* rast_arraylist_get(struct rast_arraylist* list, unsigned int index);
-DLL_EXPORT void rast_arraylist_clear(struct rast_arraylist* list);
-DLL_EXPORT void rast_arraylist_destroy(struct rast_arraylist* list);
+DLL_EXPORT void rast_arraylist_init(struct RastArraylist* list, size_t item_size);
+DLL_EXPORT void rast_arraylist_initSize(struct RastArraylist* list, size_t item_size, unsigned int total_length);
+DLL_EXPORT void rast_arraylist_insert(struct RastArraylist* list, unsigned int index, void * item);
+DLL_EXPORT void rast_arraylist_remove(struct RastArraylist* list, unsigned int index);
+DLL_EXPORT void rast_arraylist_push(struct RastArraylist* list, void * item);
+DLL_EXPORT void rast_arraylist_pop(struct RastArraylist* list, void * dest);
+DLL_EXPORT void* rast_arraylist_get(struct RastArraylist* list, unsigned int index);
+DLL_EXPORT void rast_arraylist_clear(struct RastArraylist* list);
+DLL_EXPORT void rast_arraylist_destroy(struct RastArraylist* list);
 
 #endif //rast_arraylist_h

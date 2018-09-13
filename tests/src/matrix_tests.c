@@ -7,7 +7,7 @@
 #include "rast_matrix.h"
 
 //Helper
-bool vertex_eq(struct rast_vertex * v1, struct rast_vertex * v2) {
+bool vector_eq(struct RastVector * v1, struct RastVector * v2) {
 	bool ret = true;
 	int i;
 	for (i = 0; i < 4 && ret; i++) {
@@ -16,7 +16,7 @@ bool vertex_eq(struct rast_vertex * v1, struct rast_vertex * v2) {
 	return ret;
 }
 
-bool transform_eq(struct rast_transform * t1, struct rast_transform * t2) {
+bool transform_eq(struct RastTransform * t1, struct RastTransform * t2) {
 	bool ret = true;
 	int i, j;
 	for (i = 0; i < 4 && ret; i++) {
@@ -29,7 +29,7 @@ bool transform_eq(struct rast_transform * t1, struct rast_transform * t2) {
 
 // Transform generation tests
 void test_matrix_transformOne() {
-	struct rast_transform transform;
+	struct RastTransform transform;
 	rast_oneTransform(&transform);
 	int i, j;
 	for (i = 0; i < 4; i++) {
@@ -40,7 +40,7 @@ void test_matrix_transformOne() {
 }
 
 void test_matrix_transformZero() {
-	struct rast_transform transform;
+	struct RastTransform transform;
 	rast_zeroTransform(&transform);
 	int i, j;
 	for (i = 0; i < 4; i++) {
@@ -51,7 +51,7 @@ void test_matrix_transformZero() {
 }
 
 void test_matrix_identity() {
-	struct rast_transform transform;
+	struct RastTransform transform;
 	rast_identityTransform(&transform);
 	int i, j;
 	for (i = 0; i < 4; i++) {
@@ -62,31 +62,31 @@ void test_matrix_identity() {
 	}
 }
 
-//Vertex generation tests
-void  test_matrix_oneVertex() {
-	struct rast_vertex vertex;
-	rast_oneVertex(&vertex);
+//Vector generation tests
+void  test_matrix_oneVector() {
+	struct RastVector vector;
+	rast_oneVector(&vector);
 	int i;
 	for (i = 0; i < 4; i++) {
-		TEST_CHECK(vertex.matrix[i] == 1);
+		TEST_CHECK(vector.matrix[i] == 1);
 	}
 }
 
 
-void  test_matrix_zeroVertex() {
-	struct rast_vertex vertex;
-	rast_zeroVertex(&vertex);
+void  test_matrix_zeroVector() {
+	struct RastVector vector;
+	rast_zeroVector(&vector);
 	int i;
 	for (i = 0; i < 4; i++) {
-		TEST_CHECK(vertex.matrix[i] == 0);
+		TEST_CHECK(vector.matrix[i] == 0);
 	}
 }
 
 //Transform Operations
 void test_matrix_addTransforms(void) {
-	struct rast_transform t1;
-	struct rast_transform t2;
-	struct rast_transform t3;
+	struct RastTransform t1;
+	struct RastTransform t2;
+	struct RastTransform t3;
 	rast_oneTransform(&t1);
 	rast_zeroTransform(&t2);
 	rast_addTransforms(&t3, &t1, &t2);
@@ -119,9 +119,9 @@ void test_matrix_addTransforms(void) {
 }
 
 void test_matrix_subTransforms(void) {
-	struct rast_transform t1;
-	struct rast_transform t2;
-	struct rast_transform t3;
+	struct RastTransform t1;
+	struct RastTransform t2;
+	struct RastTransform t3;
 	rast_oneTransform(&t1);
 	rast_zeroTransform(&t2);
 	rast_subTransforms(&t1, &t1, &t1);
@@ -150,14 +150,14 @@ void test_matrix_subTransforms(void) {
 	TEST_CHECK(transform_eq(&t1, &t3));
 }
 
-//Vertex Operations
+//Vector Operations
 void test_matrix_dotProduct(void) {
-	struct rast_vertex v1;
-	struct rast_vertex v2;
-	rast_zeroVertex(&v1);
-	rast_oneVertex(&v2);
+	struct RastVector v1;
+	struct RastVector v2;
+	rast_zeroVector(&v1);
+	rast_oneVector(&v2);
 	TEST_CHECK(rast_dotProduct(&v1, &v2) == 0);
-	rast_oneVertex(&v1);
+	rast_oneVector(&v1);
 	TEST_CHECK(rast_dotProduct(&v1, &v2) == 4);
 	int i;
 	int t = 0;
@@ -169,53 +169,53 @@ void test_matrix_dotProduct(void) {
 	TEST_CHECK(rast_dotProduct(&v1, &v2) == t);
 }
 
-void test_matrix_addVertexs(void) {
-	struct rast_vertex v1;
-	struct rast_vertex v2;
-	struct rast_vertex v3;
-	rast_zeroVertex(&v1);
-	rast_zeroVertex(&v2);
-	rast_addVertexs(&v3, &v1, &v2);
-	TEST_CHECK(vertex_eq(&v3, &v1));
-	rast_oneVertex(&v1);
-	rast_addVertexs(&v3, &v1, &v2);
-	TEST_CHECK(vertex_eq(&v3, &v1));
+void test_matrix_addVectors(void) {
+	struct RastVector v1;
+	struct RastVector v2;
+	struct RastVector v3;
+	rast_zeroVector(&v1);
+	rast_zeroVector(&v2);
+	rast_addVectors(&v3, &v1, &v2);
+	TEST_CHECK(vector_eq(&v3, &v1));
+	rast_oneVector(&v1);
+	rast_addVectors(&v3, &v1, &v2);
+	TEST_CHECK(vector_eq(&v3, &v1));
 	int i;
 	for (i = 0; i < 4; i++) {
 		v1.matrix[i] = i;
 		v2.matrix[i] = 2 * i;
 		v3.matrix[i] = 3 * i;
 	}
-	rast_addVertexs(&v1, &v1, &v2);
-	TEST_CHECK(vertex_eq(&v3, &v1));
+	rast_addVectors(&v1, &v1, &v2);
+	TEST_CHECK(vector_eq(&v3, &v1));
 }
 
-void test_matrix_subVertexs(void) {
-	struct rast_vertex v1;
-	struct rast_vertex v2;
-	struct rast_vertex v3;
-	rast_zeroVertex(&v1);
-	rast_zeroVertex(&v2);
-	rast_subVertexs(&v3, &v1, &v2);
-	TEST_CHECK(vertex_eq(&v3, &v1));
-	rast_oneVertex(&v1);
-	rast_subVertexs(&v1, &v1, &v1);
-	TEST_CHECK(vertex_eq(&v2, &v1));
+void test_matrix_subVectors(void) {
+	struct RastVector v1;
+	struct RastVector v2;
+	struct RastVector v3;
+	rast_zeroVector(&v1);
+	rast_zeroVector(&v2);
+	rast_subVectors(&v3, &v1, &v2);
+	TEST_CHECK(vector_eq(&v3, &v1));
+	rast_oneVector(&v1);
+	rast_subVectors(&v1, &v1, &v1);
+	TEST_CHECK(vector_eq(&v2, &v1));
 	int i;
 	for (i = 0; i < 4; i++) {
 		v1.matrix[i] = i;
 		v2.matrix[i] = 4 * i;
 		v3.matrix[i] = 3 * i;
 	}
-	rast_subVertexs(&v1, &v2, &v1);
-	TEST_CHECK(vertex_eq(&v3, &v1));
+	rast_subVectors(&v1, &v2, &v1);
+	TEST_CHECK(vector_eq(&v3, &v1));
 }
 
 //Matrix Multiplication
 void test_matrix_multTrans(void) {
-	struct rast_transform t1;
-	struct rast_transform t2;
-	struct rast_transform t3;
+	struct RastTransform t1;
+	struct RastTransform t2;
+	struct RastTransform t3;
 	rast_oneTransform(&t1);
 	rast_zeroTransform(&t2);
 	rast_multTrans(&t1, &t1, &t2);
@@ -246,24 +246,24 @@ void test_matrix_multTrans(void) {
 	TEST_CHECK(transform_eq(&t1, &t3));
 }
 
-void test_matrix_transVertex(void) {
-	struct rast_transform t;
-	struct rast_vertex v1;
-	struct rast_vertex v2;
+void test_matrix_transVector(void) {
+	struct RastTransform t;
+	struct RastVector v1;
+	struct RastVector v2;
 	rast_oneTransform(&t);
-	rast_zeroVertex(&v1);
-	rast_transVertex(&v2, &v1, &t);
-	TEST_CHECK(vertex_eq(&v1, &v2));
-	rast_oneVertex(&v1);
+	rast_zeroVector(&v1);
+	rast_transVector(&v2, &v1, &t);
+	TEST_CHECK(vector_eq(&v1, &v2));
+	rast_oneVector(&v1);
 	int i, j;
 	for (i = 0; i < 4; i++) {
 		v2.matrix[i] = 4;
 	}
-	rast_transVertex(&v1, &v1, &t);
-	TEST_CHECK(vertex_eq(&v1, &v2));
+	rast_transVector(&v1, &v1, &t);
+	TEST_CHECK(vector_eq(&v1, &v2));
 	rast_identityTransform(&t);
-	rast_transVertex(&v1, &v2, &t);
-	TEST_CHECK(vertex_eq(&v2, &v1));
+	rast_transVector(&v1, &v2, &t);
+	TEST_CHECK(vector_eq(&v2, &v1));
 	for (i = 0; i < 4; i++) {
 		for (j = 0; j < 4; j++) {
 			t.matrix[i][j] = (4 * i) + j;
@@ -273,6 +273,6 @@ void test_matrix_transVertex(void) {
 		v1.matrix[i] = i;
 	}
 	v2.matrix[0] = 56; v2.matrix[1] = 62; v2.matrix[2] = 68; v2.matrix[3] = 74;
-	rast_transVertex(&v1, &v1, &t);
-	TEST_CHECK(vertex_eq(&v1, &v2));
+	rast_transVector(&v1, &v1, &t);
+	TEST_CHECK(vector_eq(&v1, &v2));
 }

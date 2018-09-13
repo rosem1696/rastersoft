@@ -3,34 +3,34 @@
 
 #include "rast_defines.h"
 
-struct rast_transform {
+struct RastTransform {
 	float matrix[4][4];
 };
 
-struct rast_vertex {
+struct RastVector {
 	float matrix[4];
 };
 
 //Matrix Multiplication
-DLL_EXPORT void rast_multTrans(struct rast_transform* dest, struct rast_transform* mat1, struct rast_transform* mat2);
-DLL_EXPORT void rast_transVertex(struct rast_vertex* dest, struct rast_vertex* v, struct rast_transform* trans);
+DLL_EXPORT void rast_multTrans(struct RastTransform* dest, struct RastTransform* mat1, struct RastTransform* mat2);
+DLL_EXPORT void rast_transVector(struct RastVector* dest, struct RastVector* v, struct RastTransform* trans);
 
 //Vertex Operations
-DLL_EXPORT float rast_dotProduct(struct rast_vertex* v1, struct rast_vertex* v2);
-DLL_EXPORT void rast_addVertexs(struct rast_vertex* dest, struct rast_vertex* v1, struct rast_vertex* v2);
-DLL_EXPORT void rast_subVertexs(struct rast_vertex* dest, struct rast_vertex* v1, struct rast_vertex* v2);
+DLL_EXPORT float rast_dotProduct(struct RastVector* v1, struct RastVector* v2);
+DLL_EXPORT void rast_addVectors(struct RastVector* dest, struct RastVector* v1, struct RastVector* v2);
+DLL_EXPORT void rast_subVectors(struct RastVector* dest, struct RastVector* v1, struct RastVector* v2);
 
 //Transform Operations
-DLL_EXPORT void rast_addTransforms(struct rast_transform* dest, struct rast_transform* mat1, struct rast_transform* v2);
-DLL_EXPORT void rast_subTransforms(struct rast_transform* dest, struct rast_transform* mat1, struct rast_transform* mat2);
+DLL_EXPORT void rast_addTransforms(struct RastTransform* dest, struct RastTransform* mat1, struct RastTransform* v2);
+DLL_EXPORT void rast_subTransforms(struct RastTransform* dest, struct RastTransform* mat1, struct RastTransform* mat2);
 
 //Vertex Generation
-DLL_EXPORT void rast_oneVertex(struct rast_vertex * dest);
-DLL_EXPORT void rast_zeroVertex(struct rast_vertex * dest);
+DLL_EXPORT void rast_oneVector(struct RastVector * dest);
+DLL_EXPORT void rast_zeroVector(struct RastVector * dest);
 
 //Transform Generation
-DLL_EXPORT void rast_identityTransform(struct rast_transform * dest);
-DLL_EXPORT void rast_oneTransform(struct rast_transform * dest);
-DLL_EXPORT void rast_zeroTransform(struct rast_transform * dest);
+DLL_EXPORT void rast_identityTransform(struct RastTransform * dest);
+DLL_EXPORT void rast_oneTransform(struct RastTransform * dest);
+DLL_EXPORT void rast_zeroTransform(struct RastTransform * dest);
 
 #endif
