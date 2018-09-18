@@ -7,8 +7,8 @@
 * @license MIT License
 */
 
-#ifndef template_h
-#define template_h
+#ifndef rast_object_h
+#define rast_object_h
 
 /*** Headers***/
 #include <stdbool.h>
@@ -20,9 +20,9 @@
 /*** Structs ***/
 
 struct RastTextureCoord {
-	double u;
-	double v;
-	double w;
+	float u;
+	float v;
+	float w;
 };
 
 struct RastFace {
@@ -40,20 +40,20 @@ struct RastObject {
 
 /*** Exported Functions ***/
 
-void rast_object_init(struct RastObject* obj);
+DLL_EXPORT void rast_object_init(struct RastObject* obj);
 
-void rast_object_add_vertex(struct RastObject* obj, struct RastVector* v);
+DLL_EXPORT void rast_object_add_vertex(struct RastObject* obj, struct RastVector* v);
 
-void rast_object_add_normal(struct RastObject* obj, struct RastVector* vn);
+DLL_EXPORT void rast_object_add_normal(struct RastObject* obj, struct RastVector* vn);
 
-void rast_object_add_txcoord(struct RastObject* obj, struct RastTextureCoord* vt);
+DLL_EXPORT void rast_object_add_txcoord(struct RastObject* obj, struct RastTextureCoord* vt);
 
-void rast_object_add_face(struct RastObject* obj, struct RastFace* f);
+DLL_EXPORT void rast_object_add_face(struct RastObject* obj, struct RastFace* f);
 
-bool rast_object_parse_line(struct RastObject* obj, char* line);
+DLL_EXPORT bool rast_object_parse_line(struct RastObject* obj, char* line);
 
-void rast_object_clear(struct RastObject* obj);
+DLL_EXPORT void rast_object_clear(struct RastObject* obj);
 
-void rast_object_destroy(struct RastObject* obj);
+DLL_EXPORT void rast_object_destroy(struct RastObject* obj);
 
-#endif //template_h
+#endif //rast_object_h

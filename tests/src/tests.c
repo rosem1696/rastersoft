@@ -1,6 +1,7 @@
 #include "acutest.h"
 #include "matrix_tests.h"
 #include "arraylist_tests.h"
+#include "object_tests.h"
 
 TEST_LIST = {
 	//Matrix Tests
@@ -23,5 +24,11 @@ TEST_LIST = {
 	{ "arraylist_insert", test_arraylist_insert },
 	{ "arraylist_remove", test_arraylist_remove },
 	{ "arraylist_clear", test_arraylist_clear },
+	//Object Tests
+	{ "object_parse_vertex", test_obj_parse_vertex },
+	{ "object_parse_normal", test_obj_parse_normal },
+	{ "object_parse_texture", test_obj_parse_texture },
+	{ "object_parse_face", test_obj_parse_face },
+	{ "object_parse_misc", test_obj_parse_misc },
 	{ NULL, NULL }
 };

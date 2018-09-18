@@ -18,8 +18,6 @@
 #include "rast_arraylist.h"
 #include "rast_matrix.h"
 
-/*** Local Defines ***/
-
 /*** Local Functions ***/
 
 bool parse_face_token(char * face_tok, int* v, int* vt, int* vn, int type) {
@@ -27,11 +25,11 @@ bool parse_face_token(char * face_tok, int* v, int* vt, int* vn, int type) {
 	case 0:
 		return sscanf(face_tok, "%d/%d/%d", v, vt, vn) == 3;
 	case 1:
-		return sscanf(face_tok, "%d//%d", &v, &vn) == 2;
+		return sscanf(face_tok, "%d//%d", v, vn) == 2;
 	case 2:
-		return sscanf(face_tok, "%d/%d", &v, &vt) == 2;
+		return sscanf(face_tok, "%d/%d", v, vt) == 2;
 	case 3:
-		return sscanf(face_tok, "%d", &v) == 1;
+		return sscanf(face_tok, "%d", v) == 1;
 	default:
 		return false;
 	}
@@ -51,7 +49,7 @@ void rast_object_add_vertex(struct RastObject* obj, struct RastVector* v) {
 }
 
 void rast_object_add_normal(struct RastObject* obj, struct RastVector* vn) {
-	rast_arraylist_push(&obj->vertexNormals, &vn);
+	rast_arraylist_push(&obj->vertexNormals, vn);
 }
 
 void rast_object_add_txcoord(struct RastObject* obj, struct RastTextureCoord* vt) {
@@ -90,7 +88,7 @@ bool rast_object_parse_line(struct RastObject* obj, char* line) {
 		}
 		rast_object_add_vertex(obj, &v);
 		return true;
-	} else if (strcmp(tok, "vn")) { //Vertex Normal
+	} else if (strcmp(tok, "vn") == 0) { //Vertex Normal
 		//parse xyz
 		struct RastVector vn;
 		int i;
@@ -106,7 +104,7 @@ bool rast_object_parse_line(struct RastObject* obj, char* line) {
 		vn.matrix[3] = 1;
 		rast_object_add_normal(obj, &vn);
 		return true;
-	} else if (strcmp(tok, "vn")) { //Vertex Texture Coordinate
+	} else if (strcmp(tok, "vt") == 0) { //Vertex Texture Coordinate
 		//parse uv
 		struct RastTextureCoord vt;
 		int i;
@@ -130,27 +128,31 @@ bool rast_object_parse_line(struct RastObject* obj, char* line) {
 				return false;
 			vt.w = w;
 		} else {
-			vt.w = 1;
+			vt.w = 0;
 		}
 		rast_object_add_txcoord(obj, &vt);
 		return true;
-	} else if (strcmp(tok, "vn")) { //Face
+	} else if (strcmp(tok, "f") == 0) { //Face
 		int type = -1;
 		struct RastFace f;
 		//find face component 1 & format type
 		tok = strtok(NULL, " ");
 		int i;
 		for (int i = 0; i < 4 && type < 0; i++) {
-			int v1 = -1;
-			int vt1 = -1;
-			int vn1 = -1;
+			int v1 = 0;
+			int vt1 = 0;
+			int vn1 = 0;
 			if (parse_face_token(tok, &v1, &vt1, &vn1, i)) {
+				// Adjust to 0 indexed arrays	
 				f.v1 = v1;
 				f.vt1 = vt1;
 				f.vn1 = vn1;
 				type = i;
 			}
 		}
+		//set 2nd and 3rd face compnents to 0
+		f.v2 = 0; f.vt2 = 0; f.vn2 = 0;
+		f.v3 = 0; f.vt3 = 0; f.vn3 = 0;
 		//check that valid type was found
 		if (type == -1)
 			return false;
@@ -161,6 +163,11 @@ bool rast_object_parse_line(struct RastObject* obj, char* line) {
 		tok = strtok(NULL, " ");
 		if (!parse_face_token(tok, &f.v3, &f.vt3, &f.vn3, type))
 			return false;
+		//adjust all face elements to 0 index (unset to -1)
+		f.v1 -= 1; f.vt1 -= 1; f.vn1 -= 1;
+		f.v2 -= 1; f.vt2 -= 1; f.vn2 -= 1;
+		f.v3 -= 1; f.vt3 -= 1; f.vn3 -= 1;
+
 		//add face to object
 		rast_arraylist_push(&obj->faces, &f);
 		return true;

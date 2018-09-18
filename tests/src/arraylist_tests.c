@@ -5,7 +5,7 @@
 #include "rast_arraylist.h"
 
 void test_arraylist_init(void) {
-	struct rast_arraylist testList;
+	struct RastArraylist testList;
 	//test default init
 	rast_arraylist_init(&testList, sizeof(int));
 	TEST_CHECK(testList.allocated == 10);
@@ -21,7 +21,7 @@ void test_arraylist_init(void) {
 
 void test_arraylist_push_get(void) {
 	//initialize
-	struct rast_arraylist testList;
+	struct RastArraylist testList;
 	rast_arraylist_init(&testList, sizeof(int));
 	//add items
 	int i;
@@ -47,7 +47,7 @@ void test_arraylist_push_get(void) {
 
 void test_arraylist_pop(void) {
 	//initialize
-	struct rast_arraylist testList;
+	struct RastArraylist testList;
 	rast_arraylist_init(&testList, sizeof(int));
 	//add items
 	int i;
@@ -65,7 +65,7 @@ void test_arraylist_pop(void) {
 
 void test_arraylist_insert(void) {
 	//initialize
-	struct rast_arraylist testList;
+	struct RastArraylist testList;
 	rast_arraylist_init(&testList, sizeof(int));
 	//add items
 	int i;
@@ -85,7 +85,7 @@ void test_arraylist_insert(void) {
 
 void test_arraylist_remove(void) {
 	//initialize
-	struct rast_arraylist testList;
+	struct RastArraylist testList;
 	rast_arraylist_init(&testList, sizeof(int));
 	//add items
 	int i;
@@ -104,7 +104,7 @@ void test_arraylist_remove(void) {
 
 void test_arraylist_clear(void) {
 	//initialize
-	struct rast_arraylist testList;
+	struct RastArraylist testList;
 	rast_arraylist_init(&testList, sizeof(int));
 	//add items
 	int i;
