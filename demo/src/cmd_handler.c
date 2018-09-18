@@ -102,10 +102,6 @@ int cmd_watch(void * params) {
 			}
 		}
 	}
-
-	//TODO - Move this to main thread
-	//free memory from comand array
-	free_cmds();
 	return 0;
 }
 

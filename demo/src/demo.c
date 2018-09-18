@@ -67,6 +67,8 @@ int main(int argc, char *argv[]) {
 
 	}
 
+	//free memory from comand array
+	free_cmds();
 	return 0;
 }
 
