@@ -1,4 +1,49 @@
 Rastersoft:
 - objects
-- entities: instance of objects&textures
-- texture
+- textures
+- entities
+    - instance of object in world
+    - world location
+    - orientation
+    - source object
+    - source texture
+    - settings
+    - model world matrix
+- camera
+    - world position
+    - orientation
+    - pixel_buffer
+    - depth_buffer
+    - settings
+        - resolution (aspect ratio implied)
+        - fov
+        - distance to near plane
+        - distance to far plane
+    - world view matrix
+    - Projection matrix
+
+steps :
+1. initialize context with camera settings (resolution, initial position, etc)
+2. load objects & textures
+3. declare entities
+4. Buffer working space for vertices, primitives, fragments
+LOOP
+5. Set each value in the depth buffer to float.max 
+4. Start Pipeline, do for each entity:
+    - Model view transform
+    - Vertex processing
+    - Projection
+    - Geometry processing
+    - Clipping
+    - Perspective divide
+    - Back face culling
+    - Transform to Window space
+    - Rasterization
+    - Fragment processing
+        - Lighting, texture mapping, etc
+    - Scissor test
+    - Depth test
+        - Tests could be done before fragment processing to increase performance
+    - Write to pixel Buffer
+5. Copy pixel buffer to screen
+6. Update positions, orientations, etc.
