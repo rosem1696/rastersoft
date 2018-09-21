@@ -1,0 +1,4 @@
+Rastersoft:
+- objects
+- entities: instance of objects&textures
+- texture
