@@ -5,13 +5,9 @@
 #include "rast_object.h"
 
 /*** Structs ***/
+
 struct RastContext {
 	struct RastArraylist objects;
-	
-};
-
-struct RastSettings {
-
 };
 
 #endif //rastersoft_h

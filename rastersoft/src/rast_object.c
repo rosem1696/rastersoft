@@ -2,7 +2,7 @@
 * @file rast_object.c
 * @author Mitchell Rose
 * @date 10 Sep 2018
-* @brief Functions for loading & interactiong with wavefront obj 
+* @brief Function for loading & interactiong with wavefront obj 
 *		 file defined 3d models
 * @copyright Copyright (c) 2018 Mitchell Rose
 * @license MIT License

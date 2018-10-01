@@ -4,14 +4,14 @@ Rastersoft:
 - entities
     - instance of object in world
     - world location
-    - orientation
+    - orientation (Quaternion)
     - source object
     - source texture
     - settings
     - model world matrix
 - camera
     - world position
-    - orientation
+    - orientation (Quaternion)
     - pixel_buffer
     - depth_buffer
     - settings
