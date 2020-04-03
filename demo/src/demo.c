@@ -65,10 +65,7 @@ int main(int argc, char *argv[]) {
 		}
 		//SDL_Delay(10);
 
-	}
-
-	//free memory from comand array
-	free_cmds();
+	}	
 	return 0;
 }
 

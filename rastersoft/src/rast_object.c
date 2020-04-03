@@ -23,13 +23,13 @@
 bool parse_face_token(char * face_tok, int* v, int* vt, int* vn, int type) {
 	switch (type) {
 	case 0:
-		return sscanf(face_tok, "%d/%d/%d", v, vt, vn) == 3;
+		return sscanf_s(face_tok, "%d/%d/%d", v, vt, vn) == 3;
 	case 1:
-		return sscanf(face_tok, "%d//%d", v, vn) == 2;
+		return sscanf_s(face_tok, "%d//%d", v, vn) == 2;
 	case 2:
-		return sscanf(face_tok, "%d/%d", v, vt) == 2;
+		return sscanf_s(face_tok, "%d/%d", v, vt) == 2;
 	case 3:
-		return sscanf(face_tok, "%d", v) == 1;
+		return sscanf_s(face_tok, "%d", v) == 1;
 	default:
 		return false;
 	}
@@ -62,25 +62,26 @@ void rast_object_add_face(struct RastObject* obj, struct RastFace* f) {
 
 bool rast_object_parse_line(struct RastObject* obj, char* line) {
     //Determine line type
-	char * tok = strtok(line, " ");
+	char* save;
+	char * tok = strtok_s(line, " ", &save);
 	if (strcmp(tok, "v") == 0) { //Vertex
 		//parse xyz
 		struct RastVector v;
 		int i;
 		for (i = 0; i < 3; i++) {
-			tok = strtok(NULL, " ");
+			tok = strtok_s(NULL, " ", &save);
 			if (!tok)
 				return false;
 			float f;
-			if (sscanf(tok, "%f", &f) != 1)
+			if (sscanf_s(tok, "%f", &f) != 1)
 				return false;
 			v.matrix[i] = f;
 		}
 		//check for w
-		tok = strtok(NULL, " ");
+		tok = strtok_s(NULL, " ", &save);
 		if (tok) {
 			float w;
-			if (sscanf(tok, "%f", &w) != 1)
+			if (sscanf_s(tok, "%f", &w) != 1)
 				return false;
 			v.matrix[3] = w;
 		} else {
@@ -93,11 +94,11 @@ bool rast_object_parse_line(struct RastObject* obj, char* line) {
 		struct RastVector vn;
 		int i;
 		for (i = 0; i < 3; i++) {
-			tok = strtok(NULL, " ");
+			tok = strtok_s(NULL, " ", &save);
 			if (!tok)
 				return false;
 			float f;
-			if (sscanf(tok, "%f", &f) != 1)
+			if (sscanf_s(tok, "%f", &f) != 1)
 				return false;
 			vn.matrix[i] = f;
 		}
@@ -109,11 +110,11 @@ bool rast_object_parse_line(struct RastObject* obj, char* line) {
 		struct RastTextureCoord vt;
 		int i;
 		for (i = 0; i < 2; i++) {
-			tok = strtok(NULL, " ");
+			tok = strtok_s(NULL, " ", &save);
 			if (!tok)
 				return false;
 			float f;
-			if (sscanf(tok, "%f", &f) != 1)
+			if (sscanf_s(tok, "%f", &f) != 1)
 				return false;
 			if (i == 0)
 				vt.u = f;
@@ -121,10 +122,10 @@ bool rast_object_parse_line(struct RastObject* obj, char* line) {
 				vt.v = f;
 		}
 		//check for w
-		tok = strtok(NULL, " ");
+		tok = strtok_s(NULL, " ", &save);
 		if (tok) {
 			float w;
-			if (sscanf(tok, "%f", &w) != 1)
+			if (sscanf_s(tok, "%f", &w) != 1)
 				return false;
 			vt.w = w;
 		} else {
@@ -136,8 +137,7 @@ bool rast_object_parse_line(struct RastObject* obj, char* line) {
 		int type = -1;
 		struct RastFace f;
 		//find face component 1 & format type
-		tok = strtok(NULL, " ");
-		int i;
+		tok = strtok_s(NULL, " ", &save);
 		for (int i = 0; i < 4 && type < 0; i++) {
 			int v1 = 0;
 			int vt1 = 0;
@@ -157,10 +157,10 @@ bool rast_object_parse_line(struct RastObject* obj, char* line) {
 		if (type == -1)
 			return false;
 		//retrieve 2nd & 3rd faces using format
-		tok = strtok(NULL, " ");
+		tok = strtok_s(NULL, " ", &save);
 		if (!parse_face_token(tok, &f.v2, &f.vt2, &f.vn2, type))
 			return false;
-		tok = strtok(NULL, " ");
+		tok = strtok_s(NULL, " ", &save);
 		if (!parse_face_token(tok, &f.v3, &f.vt3, &f.vn3, type))
 			return false;
 		//adjust all face elements to 0 index (unset to -1)

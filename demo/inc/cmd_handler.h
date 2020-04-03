@@ -11,18 +11,22 @@
 #define cmd_handler_h
 
 /*** Standard Library ***/
+#include <stdbool.h>
+
 /*** External Libraries ***/
 /*** Local Headers ***/
 
 /*** Global Defines ***/
 #define CMD_THREAD_NAME "Command_Thread"
 
+#define CONSOLE_PRINT(x, ...) console_print(x, true, __VA_ARGS__)
+
 /*** Global Enums ***/
 
 /*** Global Structs ***/
 
 /**
- * @brief Structure for adding command to interface
+ * @brief Operable information for an enabled command
  * 
  * Structure that commands must fit to be added to the command interface.
  * 'name' - the alias that the user can enter to call the command.
@@ -36,6 +40,11 @@ struct Command {
 	void(*handler)(struct Cmd_Input*);
 };
 
+/**
+ * @brief A command input
+ *
+ * Structure which holds a command input
+ */
 struct Cmd_Input {
 	int num_op;
 	struct Cmd_Option * ops;
@@ -60,6 +69,6 @@ struct Cmd_Option {
 
 /*** Global Functions ***/
 int cmd_watch(void * params);
-void free_cmds();
+void console_print(char* format, bool newline, ...);
 
 #endif //cmd_handler_h

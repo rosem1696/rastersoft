@@ -9,6 +9,9 @@
 
 /*** Standard Library ***/
 #include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+
 #include "rast_arraylist.h"
 
 /*** Local Functions ***/
@@ -20,7 +23,7 @@ void ensureSize(struct RastArraylist* list) {
 	}
 }
 
-void* getIndexPointer(struct RastArraylist* list, int index) {
+void* getIndexPointer(struct RastArraylist* list, uint64_t index) {
 	return (((char*) list->list) + (list->item_size * index));
 }
 
@@ -33,7 +36,7 @@ void rast_arraylist_init(struct RastArraylist* list, size_t item_size) {
 	list->list = malloc(list->item_size * list->allocated);
 }
 
-void rast_arraylist_initSize(struct RastArraylist* list, size_t item_size, unsigned int total_length) {
+void rast_arraylist_initSize(struct RastArraylist* list, size_t item_size, uint64_t total_length) {
 	if (total_length > 0) {
 		list->item_size = item_size;
 		list->length = 0;
@@ -42,7 +45,7 @@ void rast_arraylist_initSize(struct RastArraylist* list, size_t item_size, unsig
 	}
 }
 
-void rast_arraylist_insert(struct RastArraylist* list, unsigned int index, void* item) {
+void rast_arraylist_insert(struct RastArraylist* list, uint64_t index, void* item) {
 	if (item) {
 		if (index < list->length) {
 			ensureSize(list);
@@ -57,7 +60,7 @@ void rast_arraylist_insert(struct RastArraylist* list, unsigned int index, void*
 	}
 }
 
-void rast_arraylist_remove(struct RastArraylist* list, unsigned int index) {
+void rast_arraylist_remove(struct RastArraylist* list, uint64_t index) {
 	if (index < list->length - 1) {
 		void * moveDest = getIndexPointer(list, index);
 		void * moveStart = getIndexPointer(list, index + 1);
@@ -83,7 +86,7 @@ void rast_arraylist_pop(struct RastArraylist* list, void* dest) {
 	}
 }
 
-void* rast_arraylist_get(struct RastArraylist* list, unsigned int index) {
+void* rast_arraylist_get(struct RastArraylist* list, uint64_t index) {
 	return (index < list->length)
 		? getIndexPointer(list, index)
 		: NULL;

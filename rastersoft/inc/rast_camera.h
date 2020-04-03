@@ -17,6 +17,6 @@ struct rast_camera {
 };
 
 struct rast_resolution {
-    
-}
+
+};
 #endif //rast_camera_h
