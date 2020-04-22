@@ -298,7 +298,9 @@ bool parse_input(char* input, char** tok_save, struct Cmd_Input* in) {
                                 return false;
                             }
                             //get next token
-                            tok = strtok_s(NULL, CMD_IN_DELIM, tok_save);
+                            if (!quote_found) {
+                                tok = strtok_s(NULL, CMD_IN_DELIM, tok_save);
+                            }
                         }
                         if (!quote_found) {
                             printf("Bad Parameter: Couldn't find ending quote\n");
